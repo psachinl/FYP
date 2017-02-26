@@ -1,4 +1,4 @@
-classdef LMRNode
+classdef DREAMNode
     % Class to describe nodes in a MANET where transmission is via LMR
     
     % Constant object values
@@ -14,7 +14,7 @@ classdef LMRNode
         packets_transmitted = 0;
         packets_received = 0;
         message_to_transmit = false;
-        routing_table
+        location_table
     end
     
     % Private variables

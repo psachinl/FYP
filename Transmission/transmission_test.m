@@ -4,23 +4,53 @@ nodes = {}; % Cell array to store all nodes
 number_of_nodes = 4;
 
 for n = 1:number_of_nodes
-    nodes{n} = LMRNode;
+    nodes{n} = DREAMNode;
 end
 
-node1 = LMRNode;
-node1.position = [2,2];
-node1.message_to_transmit = true;
+clear n
 
-node2 = LMRNode;
-node2.position = [0,0];
+% Set node attributes
+nodes{1}.position = [2,2];
+nodes{1}.message_to_transmit = true;
 
-node3 = LMRNode;
-node3.position = [-1,-1];
+nodes{2}.position = [0,0];
 
-node4 = LMRNode;
-node4.position = [1,-1];
+nodes{3}.position = [-1,-1];
 
-if checkBTRange(node1,node2) && node1.message_to_transmit
-    transmitted=true;
+nodes{4}.position = [1,-1];
+
+% % Plot node positions
+% figure
+% hold on
+% for n=1:number_of_nodes
+%     plot(nodes{n}.position(1),nodes{n}.position(2),'*')
+% end
+% hold off
+% grid on
+
+% Fill location tables
+% TODO: If the node has moved, transmit update messages to neighbouring
+% nodes
+
+for i=1:number_of_nodes
+    for j=1:number_of_nodes
+        nodes{i}.location_table{j} = nodes{j}.position;
+    end
+end
+
+clear i j
+
+if checkBTRange(nodes{1},nodes{2}) && nodes{1}.message_to_transmit
+    p = DREAMPacket;
+    p.source = 1;
+    p.destination = 2;
+    
+    % TODO: Implement packet transmission in the form:
+    % nodes{1}.transmit(p)
+    
+    % Packet will move from p.source to p.destination
+    % Ack needed for simulation?
+    % Update nodes{1}.packets_transmitted
+    % Update nodes{2}.pakets_received
 end
 

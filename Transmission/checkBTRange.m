@@ -5,8 +5,7 @@ function inBTRange = checkBTRange(node1,node2)
 % Inputs: Transmission node objects
 % Output: Boolean true if nodes are in range
 
-dist_vec = node2.position - node1.position;
-dist = sqrt(dist_vec(1)^2 + dist_vec(2)^2);
+dist = calculateDistance(node1,node2);
 
 if dist <= 10
     inBTRange = true;

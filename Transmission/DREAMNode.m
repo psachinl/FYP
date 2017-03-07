@@ -30,7 +30,13 @@ classdef DREAMNode
     % Public methods
     methods
         function power_consumption=get.power_consumption(self)
+            % Method to calculate power consumption
             power_consumption = self.packets_transmitted * self.transmission_cost;
+        end
+        function [self,dst] = transmit(self,dst)
+            % Method to transmit a message from node to dst node
+            self.packets_transmitted = self.packets_transmitted + 1;
+            dst.packets_received = dst.packets_received + 1;
         end
     end
 end

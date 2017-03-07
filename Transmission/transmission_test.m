@@ -41,16 +41,18 @@ end
 clear i j
 
 if checkBTRange(nodes{1},nodes{2}) && nodes{1}.message_to_transmit
-    p = DREAMPacket;
-    p.source = 1;
-    p.destination = 2;
+    % p = DREAMPacket;
+    % p.source = 1;
+    % p.destination = 2;
+
+    % TODO: Implement the use of the location table
+
+    src = 1;
+    dst = 2;
     
-    % TODO: Implement packet transmission in the form:
-    % nodes{1}.transmit(p)
+    [nodes{src},nodes{dst}] = nodes{src}.transmit(nodes{dst});
     
-    % Packet will move from p.source to p.destination
-    % Ack needed for simulation?
-    % Update nodes{1}.packets_transmitted
-    % Update nodes{2}.pakets_received
+    % TODO: Model packet movement in a 2D plane
+    % TODO: Add ack packets if required
 end
 

@@ -5,6 +5,7 @@ number_of_nodes = 4;
 
 for n = 1:number_of_nodes
     nodes{n} = DREAMNode;
+    nodes{n}.id = n;
 end
 
 clear n
@@ -31,6 +32,7 @@ nodes{4}.position = [1,-1];
 % Fill location tables
 % TODO: If the node has moved, transmit update messages to neighbouring
 % nodes
+% TODO: Add energy cost of updating location table and message table
 
 for i=1:number_of_nodes
     for j=1:number_of_nodes
@@ -52,8 +54,6 @@ for src=1:number_of_nodes
             if dest ~= src
                 if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-                    
-                    % TODO: Update message tables after transmission
                 end
             end
         end
@@ -62,5 +62,5 @@ end
 
 clear src dest
     
-    % TODO: Model packet movement in a 2D plane
-    % TODO: Add ack packets if required
+% TODO: Model packet movement in a 2D plane
+% TODO: Add ack packets if required

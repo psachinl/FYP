@@ -10,6 +10,7 @@ classdef DREAMNode
     
     % Public variables
     properties
+        id
         position
         packets_transmitted = 0;
         packets_received = 0;
@@ -40,6 +41,7 @@ classdef DREAMNode
             self.packets_transmitted = self.packets_transmitted + 1;
             dst.packets_received = dst.packets_received + 1;
             dst.message_to_transmit = true;
+            self.message_table{dst.id} = true;
         end
         
         function inBTRange = checkBTRange(node1,node2)

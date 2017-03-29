@@ -35,31 +35,32 @@ nodes{4}.position = [1,-1];
 for i=1:number_of_nodes
     for j=1:number_of_nodes
         nodes{i}.location_table{j} = nodes{j}.position;
+        nodes{i}.message_table{j} = nodes{j}.message_to_transmit;
     end
 end
 
 clear i j
-    % p = DREAMPacket;
-    % p.source = 1;
-    % p.destination = 2;
 
-    % TODO: Implement the use of the location table
-    
-for i=1:number_of_nodes
-    if nodes{i}.message_to_transmit
-        src = i;
+% Transmit message packets
 
-        for j=1:number_of_nodes
-            if j ~= src
-                dest = j;
-
-                if nodes{src}.checkBTRange(nodes{dest})
+% Transmission occurs if a given node has a message to transmit, if the
+% destination node is within BLE range and if the destination node has not
+% received the message already
+for src=1:number_of_nodes
+    if nodes{src}.message_to_transmit
+        for dest=1:number_of_nodes
+            if dest ~= src
+                if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                    
+                    % TODO: Update message tables after transmission
                 end
             end
         end
     end
 end
+
+clear src dest
     
     % TODO: Model packet movement in a 2D plane
     % TODO: Add ack packets if required

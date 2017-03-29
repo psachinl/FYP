@@ -15,6 +15,7 @@ classdef DREAMNode
         packets_received = 0;
         message_to_transmit = false;
         location_table
+        message_table
     end
     
     % Private variables
@@ -38,6 +39,7 @@ classdef DREAMNode
             % Method to transmit a message from node to dst node
             self.packets_transmitted = self.packets_transmitted + 1;
             dst.packets_received = dst.packets_received + 1;
+            dst.message_to_transmit = true;
         end
         
         function inBTRange = checkBTRange(node1,node2)

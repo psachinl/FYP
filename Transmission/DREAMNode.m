@@ -33,10 +33,27 @@ classdef DREAMNode
             % Method to calculate power consumption
             power_consumption = self.packets_transmitted * self.transmission_cost;
         end
+        
         function [self,dst] = transmit(self,dst)
             % Method to transmit a message from node to dst node
             self.packets_transmitted = self.packets_transmitted + 1;
             dst.packets_received = dst.packets_received + 1;
+        end
+        
+        function inBTRange = checkBTRange(node1,node2)
+        % Function to check whether two nodes are within Bluetooth 
+        % transmission range
+
+        % Inputs: Transmission node objects
+        % Output: Boolean true if nodes are in range
+
+            dist = calculateDistance(node1,node2);
+
+            if dist <= 10 % 10m range for Class 2 BLE radios
+                inBTRange = true;
+            else
+                inBTRange = false;
+            end
         end
     end
 end

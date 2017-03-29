@@ -39,20 +39,27 @@ for i=1:number_of_nodes
 end
 
 clear i j
-
-if checkBTRange(nodes{1},nodes{2}) && nodes{1}.message_to_transmit
     % p = DREAMPacket;
     % p.source = 1;
     % p.destination = 2;
 
     % TODO: Implement the use of the location table
-
-    src = 1;
-    dst = 2;
     
-    [nodes{src},nodes{dst}] = nodes{src}.transmit(nodes{dst});
+for i=1:number_of_nodes
+    if nodes{i}.message_to_transmit
+        src = i;
+
+        for j=1:number_of_nodes
+            if j ~= src
+                dest = j;
+
+                if nodes{src}.checkBTRange(nodes{dest})
+                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                end
+            end
+        end
+    end
+end
     
     % TODO: Model packet movement in a 2D plane
     % TODO: Add ack packets if required
-end
-

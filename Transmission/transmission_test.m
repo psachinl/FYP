@@ -1,42 +1,51 @@
 clear
+close all
 
-number_of_nodes = 6;
+number_of_nodes = 10;
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
+grid_size = 10;
+% positions = randi(grid_size,number_of_nodes,2);
+load positions
 
 for n = 1:number_of_nodes
     nodes{n} = DREAMNode;
     nodes{n}.id = n;
     nodes{n}.location_table{1,number_of_nodes} = [];
     nodes{n}.message_table{1,number_of_nodes} = [];
+    nodes{n}.position = [positions(n,1),positions(n,2)];
+    
+    if ~mod(n,5) % Seed message to every 5th node 
+        nodes{n}.message_to_transmit = true;
+    end
 end
 
 clear n
 
 % Set node attributes
 
-nodes{1}.position = [2,2];
-nodes{1}.message_to_transmit = true;
+% nodes{1}.position = [2,2];
+% nodes{1}.message_to_transmit = true;
+% 
+% nodes{2}.position = [0,0];
+% 
+% nodes{3}.position = [-1,-1];
+% 
+% nodes{4}.position = [1,-1];
+% 
+% nodes{5}.position = [21,-1];
+% nodes{5}.message_to_transmit = true;
+% 
+% nodes{6}.position = [21,-2];
 
-nodes{2}.position = [0,0];
+% Plot node positions
 
-nodes{3}.position = [-1,-1];
-
-nodes{4}.position = [1,-1];
-
-nodes{5}.position = [21,-1];
-nodes{5}.message_to_transmit = true;
-
-nodes{6}.position = [21,-2];
-
-% % Plot node positions
-
-% figure
-% hold on
-% for n=1:number_of_nodes
-%     plot(nodes{n}.position(1),nodes{n}.position(2),'*')
-% end
-% hold off
-% grid on
+figure
+hold on
+for n=1:number_of_nodes
+    plot(nodes{n}.position(1),nodes{n}.position(2),'*')
+end
+hold off
+grid on
 
 % Fill location tables
 

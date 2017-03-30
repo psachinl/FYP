@@ -93,4 +93,5 @@ end
 clear src dest
     
 % TODO: Model packet movement in a 2D plane
+% TODO: Turn this script into a transmit then move loop
 % TODO: Add ack packets if required

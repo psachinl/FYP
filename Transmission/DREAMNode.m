@@ -5,6 +5,7 @@ classdef DREAMNode
     properties (Constant)
         max_transmission_distance = 10; % Bluetooth transmission max 10m
         transmission_cost = 0.5;        % Power consumption in Watts
+        table_update_cost = 0.25;
         transmission_speed = 5;
     end
     
@@ -17,6 +18,8 @@ classdef DREAMNode
         message_to_transmit = false;
         location_table
         message_table
+        update_packets_transmitted = 0;
+        table_updates = 0;
     end
     
     % Private variables
@@ -33,7 +36,7 @@ classdef DREAMNode
     methods
         function power_consumption=get.power_consumption(self)
             % Method to calculate power consumption
-            power_consumption = self.packets_transmitted * self.transmission_cost;
+            power_consumption = (self.packets_transmitted + self.update_packets_transmitted) * self.transmission_cost + self.table_updates * self.table_update_cost;
         end
         
         function [self,dst] = transmit(self,dst)
@@ -41,6 +44,7 @@ classdef DREAMNode
             self.packets_transmitted = self.packets_transmitted + 1;
             dst.packets_received = dst.packets_received + 1;
             dst.message_to_transmit = true;
+            dst.message_table{dst.id} = true;
             self.message_table{dst.id} = true;
         end
         

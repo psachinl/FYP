@@ -29,8 +29,6 @@ clear n
 % Initialise nodes
 
 % Update packets contain new position and/or new message status values
-% TODO: If the node has moved, transmit update messages to neighbouring
-% nodes
 
 for i=1:number_of_nodes
     for j=1:number_of_nodes
@@ -90,5 +88,8 @@ for src=1:number_of_nodes
 end
 
 clear src dest
-    
+
+% TODO: Step through path
+% TODO: If the node has moved, transmit update messages to neighbouring
+% nodes
 % TODO: Add ack packets if required

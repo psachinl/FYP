@@ -124,6 +124,8 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
                         nodes{src}.table_updates = nodes{src}.table_updates + 1;
                         nodes{dest}.update_packets_transmitted = nodes{dest}.update_packets_transmitted + 1;
                     end
+                    % TODO: If a message has been received, recalculate
+                    % path if the end point is the closed exit point
                 end
             end
         end

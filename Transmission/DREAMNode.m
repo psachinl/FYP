@@ -12,7 +12,11 @@ classdef DREAMNode
     % Public variables
     properties
         id
-        position
+        position = {};
+        start_point
+        end_point
+        min_speed
+        max_speed
         packets_transmitted = 0;
         packets_received = 0;
         message_to_transmit = false;
@@ -48,14 +52,14 @@ classdef DREAMNode
             self.message_table{dst.id} = true;
         end
         
-        function inBTRange = checkBTRange(node1,node2)
+        function inBTRange = checkBTRange(self,node2)
         % Function to check whether two nodes are within Bluetooth 
         % transmission range
 
         % Inputs: Transmission node objects
         % Output: Boolean true if nodes are in range
 
-            dist = calculateDistance(node1,node2);
+            dist = calculateDistance(self,node2);
 
             if dist <= 10 % 10m range for Class 2 BLE radios
                 inBTRange = true;

@@ -13,6 +13,7 @@ classdef DREAMNode
     properties
         id
         position = {};
+        current_position
         start_point
         end_point
         min_speed

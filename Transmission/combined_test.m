@@ -1,7 +1,10 @@
 clear
 close all
 
-number_of_nodes = 3;
+number_of_stationary_nodes = 3;
+number_of_moving_nodes = 3;
+number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
+
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
 edge_end_points =   [3 4 5 6 7 2 6 5 8 7];
@@ -13,25 +16,42 @@ min_speed=[1,2,0.8]; % Min and max speeds for each node
 max_speed=[2,3,1.4];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
-% Set initial values for each node e.g. start point, end point etc.
-for n = 1:number_of_nodes
+% Set initial values for each stationary node 
+for n = 1:number_of_stationary_nodes
+    nodes{n} = StationaryNode;
+    nodes{n}.id = n;
+    nodes{n}.current_position = [map_node_positions(end_node(n),1),map_node_positions(end_node(n),2)];
+end
+
+% Station in bottom left of grid is closed
+nodes{2}.message_to_transmit = true;
+
+% Set initial values for each moving node e.g. start point, end point etc.
+for n = 1+number_of_moving_nodes:number_of_nodes
     nodes{n} = DREAMNode;
     nodes{n}.id = n;
-    nodes{n}.start_point = [map_node_positions(start_node(n),1),map_node_positions(start_node(n),2)];
-    nodes{n}.end_point = [map_node_positions(end_node(n),1),map_node_positions(end_node(n),2)];
+    nodes{n}.start_point = [map_node_positions(start_node(n-number_of_moving_nodes),1),map_node_positions(start_node(n-number_of_moving_nodes),2)];
+    nodes{n}.end_point = [map_node_positions(end_node(n-number_of_moving_nodes),1),map_node_positions(end_node(n-number_of_moving_nodes),2)];
+    nodes{n}.min_speed = min_speed(n-number_of_moving_nodes);
+    nodes{n}.max_speed = max_speed(n-number_of_moving_nodes);
     nodes{n}.location_table{1,number_of_nodes} = [];
     nodes{n}.message_table{1,number_of_nodes} = [];
     nodes{n}.current_position = nodes{n}.start_point;
+    
+    % Positions of stationary nodes are fixed and therefore known at start
+    for k=1:number_of_stationary_nodes
+        nodes{n}.location_table{k} = nodes{k}.current_position;
+    end
 end
 
-clear n
+clear n k
 
 % Initialise nodes
 
 % Update packets contain new position and/or new message status values
 
-for i=1:number_of_nodes
-    for j=1:number_of_nodes
+for i=1+number_of_moving_nodes:number_of_nodes
+    for j=1+number_of_moving_nodes:number_of_nodes
         if nodes{i}.checkBTRange(nodes{j}) && i~=j
             nodes{i}.location_table{j} = nodes{j}.current_position;
             nodes{i}.message_table{j} = nodes{j}.message_to_transmit;
@@ -49,12 +69,12 @@ clear i j
 
 % Calculate path for each node
 
-for node = 1:number_of_nodes
-    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node),end_node(node),min_speed(node),max_speed(node),map_node_positions,plot_path);
+for node = 1+number_of_moving_nodes:number_of_nodes
+    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_moving_nodes),end_node(node-number_of_moving_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions,plot_path);
     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
     nodes{node}.position = {start_and_end,waypoints,main_path,overall_path};
     
-    clear start_and_end waypoints main_path
+    clear start_and_end waypoints main_path overall_path
     
     if plot_path
         plotSPMBM(nodes{node}.position{1},nodes{node}.position{3},nodes{node}.position{2},node);
@@ -74,9 +94,9 @@ for t=1:100
     % message, the message tables are updated by the destination node sending
     % an update packet to the source node
 
-    for src=1:number_of_nodes
+    for src=1+number_of_moving_nodes:number_of_nodes
         if nodes{src}.message_to_transmit
-            for dest=1:number_of_nodes
+            for dest=1+number_of_moving_nodes:number_of_nodes
                 if dest ~= src
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
@@ -94,7 +114,7 @@ for t=1:100
     
     % Move nodes to next position in path and update tables
     
-    for n=1:number_of_nodes
+    for n=1+number_of_moving_nodes:number_of_nodes
         % Move node to next position and update location table
         nodes{n}.current_position = [nodes{n}.position{4}(t+1,1),nodes{n}.position{4}(t+1,2)];
         nodes{n}.location_table{n} = nodes{n}.current_position;
@@ -102,7 +122,7 @@ for t=1:100
         
         % Send update packets to nearby nodes to update their location
         % tables
-        for k=1:number_of_nodes
+        for k=1+number_of_moving_nodes:number_of_nodes
             if k ~= n && nodes{n}.checkBTRange(nodes{k})
                 nodes{n}.update_packets_transmitted = nodes{n}.update_packets_transmitted + 1;
                 nodes{k}.location_table{n} = nodes{n}.current_position;
@@ -116,7 +136,6 @@ end
 clear t n k
 
 % TODO: Add ack packets if required
-% TODO: Add stationary nodes (station, bus stop etc.) which have a message
-% to transmit
+% TODO: Add stationary node logic to transmit if mobile nodes are nearby
 % TODO: Add path recalculation when a message is received from a stationary
 % node. The nodes should then move along the new path to a new destination

@@ -70,7 +70,7 @@ clear i j
 % Calculate path for each moving node
 
 for node = 1+number_of_stationary_nodes:number_of_nodes
-    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_moving_nodes),end_node(node-number_of_moving_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions,plot_path);
+    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_moving_nodes),end_node(node-number_of_moving_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions);
     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
     nodes{node}.position = {start_and_end,waypoints,main_path,overall_path};
     
@@ -100,8 +100,13 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
             for dest=1+number_of_stationary_nodes:number_of_nodes
                 if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-                    % TODO: Moving node recalculates path and moves to new
-                    % destination
+                    
+                    % Recalculate path to new exit point
+                    remaining_positions = [nodes{dest}.position{4}(t:end,1),nodes{dest}.position{4}(t:end,2)];
+%                     old_positions = nodes{dest}.position;
+                    [start_and_end,waypoints,main_path] = recalculate(edge_start_points,edge_end_points,W,end_node(dest-number_of_moving_nodes),end_node(1),nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions,remaining_positions);
+                    overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
+                    nodes{dest}.position = {start_and_end,waypoints,main_path,overall_path};
                 end
             end
         end

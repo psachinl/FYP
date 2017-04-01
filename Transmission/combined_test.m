@@ -27,7 +27,7 @@ end
 nodes{2}.message_to_transmit = true;
 
 % Set initial values for each moving node e.g. start point, end point etc.
-for n = 1+number_of_moving_nodes:number_of_nodes
+for n = 1+number_of_stationary_nodes:number_of_nodes
     nodes{n} = DREAMNode;
     nodes{n}.id = n;
     nodes{n}.start_point = [map_node_positions(start_node(n-number_of_moving_nodes),1),map_node_positions(start_node(n-number_of_moving_nodes),2)];
@@ -50,8 +50,8 @@ clear n k
 
 % Update packets contain new position and/or new message status values
 
-for i=1+number_of_moving_nodes:number_of_nodes
-    for j=1+number_of_moving_nodes:number_of_nodes
+for i=1+number_of_stationary_nodes:number_of_nodes
+    for j=1+number_of_stationary_nodes:number_of_nodes
         if nodes{i}.checkBTRange(nodes{j}) && i~=j
             nodes{i}.location_table{j} = nodes{j}.current_position;
             nodes{i}.message_table{j} = nodes{j}.message_to_transmit;
@@ -67,9 +67,9 @@ end
 
 clear i j
 
-% Calculate path for each node
+% Calculate path for each moving node
 
-for node = 1+number_of_moving_nodes:number_of_nodes
+for node = 1+number_of_stationary_nodes:number_of_nodes
     [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_moving_nodes),end_node(node-number_of_moving_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions,plot_path);
     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
     nodes{node}.position = {start_and_end,waypoints,main_path,overall_path};
@@ -84,7 +84,7 @@ end
 clear node
 
 % Loop over each time slice t
-for t=1:100
+for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time slices - may need to extend some paths
     
     % Transmit message packets
 
@@ -93,10 +93,24 @@ for t=1:100
     % received the message already. If the destination node already has the
     % message, the message tables are updated by the destination node sending
     % an update packet to the source node
-
-    for src=1+number_of_moving_nodes:number_of_nodes
+    
+    % Stationary node to moving node transmission step
+    for src=1:number_of_stationary_nodes
         if nodes{src}.message_to_transmit
-            for dest=1+number_of_moving_nodes:number_of_nodes
+            for dest=1+number_of_stationary_nodes:number_of_nodes
+                if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
+                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                    % TODO: Moving node recalculates path and moves to new
+                    % destination
+                end
+            end
+        end
+    end
+    
+    % Moving node to moving node transmission step
+    for src=1+number_of_stationary_nodes:number_of_nodes
+        if nodes{src}.message_to_transmit
+            for dest=1+number_of_stationary_nodes:number_of_nodes
                 if dest ~= src
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
@@ -114,7 +128,7 @@ for t=1:100
     
     % Move nodes to next position in path and update tables
     
-    for n=1+number_of_moving_nodes:number_of_nodes
+    for n=1+number_of_stationary_nodes:number_of_nodes
         % Move node to next position and update location table
         nodes{n}.current_position = [nodes{n}.position{4}(t+1,1),nodes{n}.position{4}(t+1,2)];
         nodes{n}.location_table{n} = nodes{n}.current_position;
@@ -122,7 +136,7 @@ for t=1:100
         
         % Send update packets to nearby nodes to update their location
         % tables
-        for k=1+number_of_moving_nodes:number_of_nodes
+        for k=1+number_of_stationary_nodes:number_of_nodes
             if k ~= n && nodes{n}.checkBTRange(nodes{k})
                 nodes{n}.update_packets_transmitted = nodes{n}.update_packets_transmitted + 1;
                 nodes{k}.location_table{n} = nodes{n}.current_position;
@@ -135,7 +149,4 @@ end
 
 clear t n k
 
-% TODO: Add ack packets if required
-% TODO: Add stationary node logic to transmit if mobile nodes are nearby
-% TODO: Add path recalculation when a message is received from a stationary
-% node. The nodes should then move along the new path to a new destination
+% TODO: Add ack packets if required to model link failure

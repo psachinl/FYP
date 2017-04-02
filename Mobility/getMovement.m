@@ -1,9 +1,11 @@
 %%
-function [endpoints,waypoints,main_path] = getMovement(path,min_speed,max_speed,map_node_positions)
+function [endpoints,waypoints,main_path] = getMovement(path,min_speed,max_speed,map_node_positions,map_path)
 
-map_path=[];
-for node = 1:size(path,2)
-    map_path(node,:) = [map_node_positions(path(node),1), map_node_positions(path(node),2)];
+if ~exist('map_path','var')
+    % map_path parameter does not exist, so calculate it here
+    for node = 1:length(path)
+        map_path(node,:) = [map_node_positions(path(node),1), map_node_positions(path(node),2)];
+    end
 end
 
 loop_pos=[];

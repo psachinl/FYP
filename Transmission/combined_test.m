@@ -25,6 +25,8 @@ end
 
 % Station in bottom left of grid is closed
 nodes{2}.message_to_transmit = true;
+nearest_waypoint = 7;
+new_exit_point = 4;
 
 % Set initial values for each moving node e.g. start point, end point etc.
 for n = 1+number_of_stationary_nodes:number_of_nodes
@@ -112,6 +114,8 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
         end
     end
     
+    clear start_and_end waypoints main_path
+    
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
         if nodes{src}.message_to_transmit
@@ -119,13 +123,27 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
                 if dest ~= src
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                        
+                        % Calculate path to nearest waypoint in new direction
+                        [start_and_end_w,waypoints_w,main_path_w,overall_path_w] = move2Waypoint(nodes{dest},nearest_waypoint,map_node_positions);
+                        
+                        % Calculate path from nearest waypoint to new exit
+                        % point
+                        [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,nearest_waypoint,new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions);
+                        overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
+                        
+                        % Combine paths to find overall path and store new
+                        % path in node object
+                        start_and_end = [start_and_end_w;start_and_end];
+                        waypoints = [waypoints_w;waypoints];
+                        main_path = [main_path_w;main_path];
+                        overall_path = [overall_path_w;overall_path];
+                        nodes{dest}.position = {start_and_end,waypoints,main_path,overall_path};
                     elseif nodes{src}.checkBTRange(nodes{dest}) && nodes{dest}.message_to_transmit
                         nodes{src}.message_table{dest} = true;
                         nodes{src}.table_updates = nodes{src}.table_updates + 1;
                         nodes{dest}.update_packets_transmitted = nodes{dest}.update_packets_transmitted + 1;
                     end
-                    % TODO: If a message has been received, recalculate
-                    % path if the end point is the closed exit point
                 end
             end
         end

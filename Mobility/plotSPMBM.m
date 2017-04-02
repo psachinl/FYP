@@ -3,7 +3,7 @@ function plotSPMBM(start_and_end,main_path,waypoints,node)
 if ~exist('node','var')
      % third parameter does not exist, so default it to something
       node = 1;
- end
+end
 
 figure
 hold on

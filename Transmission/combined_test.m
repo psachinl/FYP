@@ -125,6 +125,7 @@ for t=1:max_time-1
                     
                     if debug
                         fprintf('Node %d position changed after transmission from node %d \n',dest,src);
+                        fprintf('Time = %d \n',t);
                     end
                 end
             end
@@ -141,6 +142,7 @@ for t=1:max_time-1
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                         if debug
                             fprintf('Transmitting from node %d to %d \n',src,dest);
+                            fprintf('Time = %d \n',t);
                             fprintf('Node %d position = [%d,%d] \n',src,nodes{src}.current_position(1),nodes{src}.current_position(2));
                             fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
                         end

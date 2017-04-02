@@ -2,18 +2,18 @@ clear
 close all
 
 number_of_stationary_nodes = 3;
-number_of_moving_nodes = 3;
+number_of_moving_nodes = 4;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
 
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
 edge_end_points =   [3 4 5 6 7 2 6 5 8 7];
 W = [579 40 128 267 163 250 0 115 18 0]; % Edge weights
-start_node = [1,2,1]; % Array of start points for each node
-end_node = [4,8,5]; % End points
+start_node = [1,2,1,2]; % Array of start points for each node
+end_node = [4,8,5,8]; % End points
 plot_path = 0; % Whether to plot (1) the movement or not (0)
-min_speed=[1,2,0.8]; % Min and max speeds for each node
-max_speed=[2,3,1.4];
+min_speed=[1,2,0.8,2]; % Min and max speeds for each node
+max_speed=[2,3,1.4,3];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
 % Set initial values for each stationary node 
@@ -32,10 +32,10 @@ new_exit_point = 4;
 for n = 1+number_of_stationary_nodes:number_of_nodes
     nodes{n} = DREAMNode;
     nodes{n}.id = n;
-    nodes{n}.start_point = [map_node_positions(start_node(n-number_of_moving_nodes),1),map_node_positions(start_node(n-number_of_moving_nodes),2)];
-    nodes{n}.end_point = [map_node_positions(end_node(n-number_of_moving_nodes),1),map_node_positions(end_node(n-number_of_moving_nodes),2)];
-    nodes{n}.min_speed = min_speed(n-number_of_moving_nodes);
-    nodes{n}.max_speed = max_speed(n-number_of_moving_nodes);
+    nodes{n}.start_point = [map_node_positions(start_node(n-number_of_stationary_nodes),1),map_node_positions(start_node(n-number_of_stationary_nodes),2)];
+    nodes{n}.end_point = [map_node_positions(end_node(n-number_of_stationary_nodes),1),map_node_positions(end_node(n-number_of_stationary_nodes),2)];
+    nodes{n}.min_speed = min_speed(n-number_of_stationary_nodes);
+    nodes{n}.max_speed = max_speed(n-number_of_stationary_nodes);
     nodes{n}.location_table{1,number_of_nodes} = [];
     nodes{n}.message_table{1,number_of_nodes} = [];
     nodes{n}.current_position = nodes{n}.start_point;
@@ -72,7 +72,7 @@ clear i j
 % Calculate path for each moving node
 
 for node = 1+number_of_stationary_nodes:number_of_nodes
-    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_moving_nodes),end_node(node-number_of_moving_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions);
+    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_stationary_nodes),end_node(node-number_of_stationary_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions);
     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
     nodes{node}.position = {start_and_end,waypoints,main_path,overall_path};
     
@@ -106,7 +106,7 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
                     % Recalculate path to new exit point
                     remaining_positions = [nodes{dest}.position{4}(t:end,1),nodes{dest}.position{4}(t:end,2)];
 %                     old_positions = nodes{dest}.position;
-                    [start_and_end,waypoints,main_path] = recalculate(edge_start_points,edge_end_points,W,end_node(dest-number_of_moving_nodes),end_node(1),nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions,remaining_positions);
+                    [start_and_end,waypoints,main_path] = recalculate(edge_start_points,edge_end_points,W,end_node(dest-number_of_stationary_nodes),end_node(1),nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions,remaining_positions);
                     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
                     nodes{dest}.position = {start_and_end,waypoints,main_path,overall_path};
                 end

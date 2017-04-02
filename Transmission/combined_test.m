@@ -149,7 +149,7 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
         end
     end
 
-    clear src dest
+    clear src dest start_and_end start_and_end_w waypoints waypoints_w main_path main_path_w overall_path overall_path_w
     
     % Move nodes to next position in path and update tables
     

@@ -4,6 +4,7 @@ close all
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = 4;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
+max_time = 400;
 
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
@@ -12,7 +13,7 @@ W = [579 40 128 267 163 250 0 115 18 0]; % Edge weights
 start_node = [1,2,1,2]; % Array of start points for each node
 end_node = [4,8,5,8]; % End points
 plot_path = 0; % Whether to plot (1) the movement or not (0)
-min_speed=[1,2,0.8,2]; % Min and max speeds for each node
+min_speed=[1,3,0.8,2]; % Min and max speeds for each node
 max_speed=[2,3,1.4,3];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
@@ -74,6 +75,12 @@ clear i j
 for node = 1+number_of_stationary_nodes:number_of_nodes
     [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,start_node(node-number_of_stationary_nodes),end_node(node-number_of_stationary_nodes),nodes{node}.min_speed,nodes{node}.max_speed,map_node_positions);
     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
+    
+    % Extend paths to avoid indexing errors
+    while length(overall_path) < max_time
+        overall_path(end+1,:) = overall_path(end,:);
+    end
+    
     nodes{node}.position = {start_and_end,waypoints,main_path,overall_path};
     
     clear start_and_end waypoints main_path overall_path
@@ -86,7 +93,8 @@ end
 clear node
 
 % Loop over each time slice t
-for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time slices - may need to extend some paths
+% for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time slices - may need to extend some paths
+for t=1:max_time-1
     
     % Transmit message packets
 
@@ -104,11 +112,16 @@ for t=1:length(nodes{5}.position{4})-4 % TODO: change limit to run for all time 
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
                     
                     % Recalculate path to new exit point
+                    % TODO: update node start_point and end_point                    
                     remaining_positions = [nodes{dest}.position{4}(t:end,1),nodes{dest}.position{4}(t:end,2)];
-%                     old_positions = nodes{dest}.position;
-                    [start_and_end,waypoints,main_path] = recalculate(edge_start_points,edge_end_points,W,end_node(dest-number_of_stationary_nodes),end_node(1),nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions,remaining_positions);
+                    % Remove duplicate values that were added to avoid
+                    % indexing errors
+                    [remaining_positions, ~, ~] = unique(remaining_positions,'rows','stable');
+                    old_positions{dest} = nodes{dest}.position; % Debugging
+                    [start_and_end,waypoints,main_path] = recalculate(edge_start_points,edge_end_points,W,end_node(dest-number_of_stationary_nodes),new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions,remaining_positions);
                     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
                     nodes{dest}.position = {start_and_end,waypoints,main_path,overall_path};
+                    msg = 'Node ' + string(dest) + ' position changed'
                 end
             end
         end
@@ -175,3 +188,4 @@ end
 clear t n k
 
 % TODO: Add ack packets if required to model link failure
+% TODO: Determine why node to node transmission does not occur

@@ -5,6 +5,7 @@ number_of_stationary_nodes = 3;
 number_of_moving_nodes = 4;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
 max_time = 400;
+debug = true; % If true, text printed to console
 
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
@@ -13,8 +14,8 @@ W = [579 40 128 267 163 250 0 115 18 0]; % Edge weights
 start_node = [1,2,1,2]; % Array of start points for each node
 end_node = [4,8,5,8]; % End points
 plot_path = 0; % Whether to plot (1) the movement or not (0)
-min_speed=[1,3,0.8,2]; % Min and max speeds for each node
-max_speed=[2,3,1.4,3];
+min_speed=[1,3,0.8,2.5]; % Min and max speeds for each node
+max_speed=[2,3,1.4,2.5];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
 % Set initial values for each stationary node 
@@ -121,7 +122,10 @@ for t=1:max_time-1
                     [start_and_end,waypoints,main_path] = recalculate(edge_start_points,edge_end_points,W,end_node(dest-number_of_stationary_nodes),new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions,remaining_positions);
                     overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
                     nodes{dest}.position = {start_and_end,waypoints,main_path,overall_path};
-                    msg = 'Node ' + string(dest) + ' position changed'
+                    
+                    if debug
+                        fprintf('Node %d position changed after transmission from node %d \n',dest,src);
+                    end
                 end
             end
         end
@@ -135,6 +139,12 @@ for t=1:max_time-1
             for dest=1+number_of_stationary_nodes:number_of_nodes
                 if dest ~= src
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
+                        if debug
+                            fprintf('Transmitting from node %d to %d \n',src,dest);
+                            fprintf('Node %d position = [%d,%d] \n',src,nodes{src}.current_position(1),nodes{src}.current_position(2));
+                            fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
+                        end
+                        
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
                         
                         % Calculate path to nearest waypoint in new direction

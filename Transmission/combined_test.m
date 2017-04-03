@@ -158,20 +158,33 @@ for t=1:max_time-1
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
                         
                         % Calculate path to nearest waypoint in new direction
-                        [start_and_end_w,waypoints_w,main_path_w,overall_path_w] = move2Waypoint(nodes{dest},nearest_waypoint,map_node_positions);
+                        [~,waypoints_w,main_path_w,overall_path_w] = move2Waypoint(nodes{dest},nearest_waypoint,map_node_positions);
                         
                         % Calculate path from nearest waypoint to new exit
                         % point
                         [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,nearest_waypoint,new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions);
                         overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
                         
-                        % Combine paths to find overall path and store new
-                        % path in node object
-                        start_and_end = [start_and_end_w;start_and_end];
+                        % Combine paths to find overall path, update
+                        % end_point
+                        start_and_end(1,:) = nodes{dest}.start_point; % Keep original start point
+                        nodes{dest}.end_point = start_and_end(2,:);
                         waypoints = [waypoints_w;waypoints];
                         main_path = [main_path_w;main_path];
                         overall_path = [overall_path_w;overall_path];
-                        nodes{dest}.position = {start_and_end,waypoints,main_path,overall_path};
+
+                        % Remove duplicates that were added to avoid indexing
+                        % errors
+                        nodes{dest} = removeDuplicates(nodes{dest});
+                        
+                        % Append new path to existing node path
+                        nodes{dest}.position{4} = [nodes{dest}.position{4};overall_path];
+                    
+                        % Update remaining position cells
+                        nodes{dest}.position{1} = start_and_end;
+                        nodes{dest}.position{2} = [nodes{dest}.position{2};waypoints];
+                        nodes{dest}.position{3} = [nodes{dest}.position{3};main_path];
+
                     elseif nodes{src}.checkBTRange(nodes{dest}) && nodes{dest}.message_to_transmit
                         nodes{src}.message_table{dest} = true;
                         nodes{src}.table_updates = nodes{src}.table_updates + 1;

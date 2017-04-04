@@ -123,7 +123,7 @@ for t=1:max_time-1
                     nodes{dest}.end_point = start_and_end(2,:);
                     
                     % Append overall path to existing path
-                    overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
+                    overall_path = [main_path; start_and_end(end,:)];
                     nodes{dest}.position{4} = [nodes{dest}.position{4};overall_path];
                     
                     % Update remaining position cells

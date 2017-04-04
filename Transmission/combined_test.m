@@ -2,7 +2,7 @@ clear
 close all
 
 number_of_moving_groups = 3;
-nodes_per_group = 2;
+nodes_per_group = 5;
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
@@ -115,6 +115,7 @@ for t=1:max_time-1
             for dest=1+number_of_stationary_nodes:number_of_nodes
                 if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                    nodes{dest}.message_table{dest} = true;
 
                     % Remove duplicates that were added to avoid indexing
                     % errors
@@ -138,7 +139,7 @@ for t=1:max_time-1
                     if debug
                         fprintf('Time = %d \n',t);
                         fprintf('Node %d position changed after transmission from node %d \n',dest,src);
-%                         fprintf('Node %d position{4} length = %d \n',dest,length(nodes{dest}.position{4}));
+                        fprintf('Node %d position{4} length = %d \n',dest,length(nodes{dest}.position{4}));
                     end
                 end
             end
@@ -161,6 +162,7 @@ for t=1:max_time-1
                         end
                         
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                        nodes{dest}.message_table{dest} = true;
                         
                         % Calculate path to nearest waypoint
                         [~,waypoints_w,main_path_w,overall_path_w,nearest_waypoint] = move2Waypoint(nodes{dest},map_node_positions);

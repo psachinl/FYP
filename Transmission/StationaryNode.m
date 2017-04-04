@@ -35,6 +35,7 @@ classdef StationaryNode
             dst.packets_received = dst.packets_received + 1;
             dst.message_to_transmit = true;
             dst.message_table{dst.id} = true;
+            dst.message_table{self.id} = true;
         end
         
         function inBTRange = checkBTRange(self,node2)

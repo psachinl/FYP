@@ -177,6 +177,10 @@ for t=1:max_time-1
                         % errors
                         nodes{dest} = removeDuplicates(nodes{dest});
                         
+                        % Truncate paths so remaining steps are removed
+                        nodes{dest}.position{4} = nodes{dest}.position{4}(1:t,:);
+                        nodes{dest}.position{3} = nodes{dest}.position{3}(1:t-1,:);
+                        
                         % Append new path to existing node path
                         nodes{dest}.position{4} = [nodes{dest}.position{4};overall_path];
                     

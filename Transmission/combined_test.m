@@ -16,7 +16,7 @@ W = [579 40 128 267 163 250 0 115 18 0]; % Edge weights
 start_node = [1,2,1,2]; % Array of start points for each node
 end_node = [4,8,5,8]; % End points
 plot_path = 0; % Whether to plot (1) the movement or not (0)
-min_speed=[1,2.5,0.8,2.5]; % Min and max speeds for each node
+min_speed=[1,2,0.8,2.5]; % Min and max speeds for each node
 max_speed=[2,3,1.4,2.5];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
@@ -122,7 +122,7 @@ for t=1:max_time-1
                     
                     % Calculate path to new exit point, update node
                     % end_point
-                    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,end_node(dest-number_of_stationary_nodes),new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions);
+                    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,W,end_node(nodes{dest}.group),new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions);
                     start_and_end(1,:) = nodes{dest}.start_point; % Keep original start point
                     nodes{dest}.end_point = start_and_end(2,:);
                     
@@ -136,8 +136,9 @@ for t=1:max_time-1
                     nodes{dest}.position{3} = [nodes{dest}.position{3};main_path];
                     
                     if debug
-                        fprintf('Node %d position changed after transmission from node %d \n',dest,src);
                         fprintf('Time = %d \n',t);
+                        fprintf('Node %d position changed after transmission from node %d \n',dest,src);
+%                         fprintf('Node %d position{4} length = %d \n',dest,length(nodes{dest}.position{4}));
                     end
                 end
             end
@@ -153,8 +154,8 @@ for t=1:max_time-1
                 if dest ~= src
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                         if debug
-                            fprintf('Transmitting from node %d to %d \n',src,dest);
                             fprintf('Time = %d \n',t);
+                            fprintf('Transmitting from node %d to %d \n',src,dest);
                             fprintf('Node %d position = [%d,%d] \n',src,nodes{src}.current_position(1),nodes{src}.current_position(2));
                             fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
                         end

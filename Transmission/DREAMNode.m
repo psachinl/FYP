@@ -12,6 +12,7 @@ classdef DREAMNode
     % Public variables
     properties
         id
+        group
         position = {};
         current_position
         start_point

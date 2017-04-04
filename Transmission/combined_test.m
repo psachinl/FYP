@@ -27,7 +27,7 @@ end
 
 % Station in bottom left of grid is closed
 nodes{2}.message_to_transmit = true;
-nearest_waypoint = 7;
+% nearest_waypoint = 7;
 new_exit_point = 4;
 
 % Set initial values for each moving node e.g. start point, end point etc.
@@ -158,7 +158,9 @@ for t=1:max_time-1
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
                         
                         % Calculate path to nearest waypoint in new direction
-                        [~,waypoints_w,main_path_w,overall_path_w] = move2Waypoint(nodes{dest},nearest_waypoint,map_node_positions);
+                        % TODO: Dynamically calculate nearest waypoint
+                        % instead of hardcoding it
+                        [~,waypoints_w,main_path_w,overall_path_w,nearest_waypoint] = move2Waypoint(nodes{dest},map_node_positions);
                         
                         % Calculate path from nearest waypoint to new exit
                         % point

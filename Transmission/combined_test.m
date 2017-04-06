@@ -115,7 +115,6 @@ for t=1:max_time-1
             for dest=1+number_of_stationary_nodes:number_of_nodes
                 if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-%                     nodes{dest}.message_table{dest} = true;
 
                     % Remove duplicates that were added to avoid indexing
                     % errors
@@ -162,7 +161,6 @@ for t=1:max_time-1
                         end
                         
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-%                         nodes{dest}.message_table{dest} = true;
                         
                         % Calculate path to nearest waypoint
                         [~,waypoints_w,main_path_w,overall_path_w,nearest_waypoint] = move2Waypoint(nodes{dest},map_node_positions);

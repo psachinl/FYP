@@ -37,7 +37,7 @@ for m = 1:number_of_moving_groups
         index = n + (m-1)*nodes_per_group + number_of_stationary_nodes;
         
         nodes{index} = DREAMNode;
-        nodes{index}.id = n;
+        nodes{index}.id = index;
         nodes{index}.group = m;
         nodes{index}.start_point = [map_node_positions(start_node(m),1),map_node_positions(start_node(m),2)];
         nodes{index}.end_point = [map_node_positions(end_node(m),1),map_node_positions(end_node(m),2)];
@@ -115,7 +115,7 @@ for t=1:max_time-1
             for dest=1+number_of_stationary_nodes:number_of_nodes
                 if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-                    nodes{dest}.message_table{dest} = true;
+%                     nodes{dest}.message_table{dest} = true;
 
                     % Remove duplicates that were added to avoid indexing
                     % errors
@@ -162,7 +162,7 @@ for t=1:max_time-1
                         end
                         
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-                        nodes{dest}.message_table{dest} = true;
+%                         nodes{dest}.message_table{dest} = true;
                         
                         % Calculate path to nearest waypoint
                         [~,waypoints_w,main_path_w,overall_path_w,nearest_waypoint] = move2Waypoint(nodes{dest},map_node_positions);

@@ -84,6 +84,18 @@ for t=1:max_time-1
             % Source node floods channel with packets
             % If a destination node is within BLE range, it picks up the
             % message
+            
+            % TODO: Add transmission via flooding
+            
+            % TODO: Add method to see which nodes are within BLE range
+            % without the use of a location table. This could be done in
+            % the script rather than in the node objects on the assumption
+            % that destination nodes will receive packets automatically
+            % and process them as required. 
+            
+            % TODO: Model link state failure using a random variable with
+            % normal distribution (other distributions may be more 
+            % suitable)
         end
     end
     
@@ -92,27 +104,17 @@ for t=1:max_time-1
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
         if nodes{src}.message_to_transmit
-            
+            % TODO: Add transmission via flooding
         end
     end
 
     clear src dest start_and_end start_and_end_w waypoints waypoints_w main_path main_path_w overall_path overall_path_w
     
-    % Move nodes to next position in path and update tables
+    % Move nodes to next position in path
     
     for n=1+number_of_stationary_nodes:number_of_nodes
         % Move node to next position
         nodes{n}.current_position = [nodes{n}.position{4}(t+1,1),nodes{n}.position{4}(t+1,2)];
-        
-        % Send update packets to nearby nodes to update their location
-        % tables
-        for k=1+number_of_stationary_nodes:number_of_nodes
-            if k ~= n && nodes{n}.checkBTRange(nodes{k})
-                nodes{n}.update_packets_transmitted = nodes{n}.update_packets_transmitted + 1;
-                nodes{k}.location_table{n} = nodes{n}.current_position;
-                nodes{k}.table_updates = nodes{k}.table_updates + 1;
-            end
-        end
     end
     
 end

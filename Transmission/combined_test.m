@@ -96,7 +96,7 @@ for node = 1+number_of_stationary_nodes:number_of_nodes
     end
 end
 
-clear node
+clear node plot_path
 
 % Loop over each time slice t
 for t=1:max_time-1
@@ -228,5 +228,3 @@ for t=1:max_time-1
 end
 
 clear t n k
-
-% TODO: Add ack packets if required to model link failure

@@ -46,7 +46,7 @@ for m = 1:number_of_moving_groups
         nodes{index}.current_position = nodes{index}.start_point;
     end
 end
-clear m n
+clear m n index
 
 % Calculate path for each moving node
 

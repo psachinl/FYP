@@ -53,7 +53,7 @@ for m = 1:number_of_moving_groups
         end
     end
 end
-clear m n k
+clear m n k index
 
 % Initialise nodes
 

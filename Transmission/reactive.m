@@ -93,9 +93,16 @@ for t=1:max_time-1
             % that destination nodes will receive packets automatically
             % and process them as required. 
             
+            % Once the node is determined to be within 10m of the broadcast
+            % location, it replies to the src node. Once the reply has been
+            % recieved, the message will be transmitted. The timeout will
+            % have to be < 1s as the location of the node will change after
+            % 1s meaning the route may no longer be valid
+            
             % TODO: Model link state failure using a random variable with
             % normal distribution (other distributions may be more 
             % suitable)
+            
         end
     end
     

@@ -6,7 +6,9 @@ classdef ReactiveNode
     properties (Constant)
         max_transmission_distance = 10; % Bluetooth transmission max 10m
         transmission_cost = 0.5;        % Power consumption in Watts
-        table_update_cost = 0.25;
+        table_update_cost = 0.5*transmission_cost;
+        broadcast_cost = 4*transmission_cost;
+        reply_cost = transmission_cost;
         transmission_speed = 5;
     end
     

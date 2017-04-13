@@ -1,5 +1,5 @@
 classdef DREAMNode
-    % Class to describe nodes in a MANET where transmission is via LMR
+    % Class to describe nodes in a MANET where transmission is via DREAM
     
     % Constant object values
     properties (Constant)

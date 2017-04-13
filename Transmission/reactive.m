@@ -97,11 +97,13 @@ for t=1:max_time-1
             % location, it replies to the src node. Once the reply has been
             % recieved, the message will be transmitted. The timeout will
             % have to be < 1s as the location of the node will change after
-            % 1s meaning the route may no longer be valid
+            % 1s meaning the route may no longer be valid.
             
             % TODO: Model link state failure using a random variable with
             % normal distribution (other distributions may be more 
-            % suitable)
+            % suitable). However, since routes are determined on demand,
+            % the link failure rate should be 0 since the route will always
+            % be valid just before transmission.
             
         end
     end

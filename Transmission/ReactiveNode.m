@@ -68,10 +68,20 @@ classdef ReactiveNode
             id = self.id;
         end
         
-        function self = sendReply(self)
-            % Method to broadcast packets to the channel to begin route
-            % discovery
+        function [self,bc_node] = sendReply(self,bc_node)
+            % Method to reply to broadcast so transmission can begin
+            % Self is the replying node i.e. destination node for the
+            % transmission, bc_node is the broadcasting node i.e. the
+            % source node for the transmission
             self.replies_sent = self.replies_sent + 1;
+            
+            self.location_table{bc_node.id} = bc_node.current_position;
+            self.location_table{self.id} = self.current_position;
+            self.table_updates = self.table_updates + 1;
+            self.update_packets_transmitted = self.update_packets_transmitted + 1;
+            
+            bc_node.location_table{self.id} = self.current_position;
+            bc_node.table_updates = bc_node.table_updates + 1;
         end
         
         function inBTRange = checkBTRange(self,node2)

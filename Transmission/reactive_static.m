@@ -32,13 +32,8 @@ for i=1:3
             fprintf('Node %d is within BLE range of node %d \n',i,node_id);
             fprintf('Sending reply message with position for transmission \n');
             
-            % Send table updates
-            nodes{i}.location_table{node_id} = nodes{node_id}.current_position;
-            nodes{i}.location_table{i} = nodes{i}.current_position;
-            nodes{i}.table_updates = nodes{i}.table_updates + 1;
-            nodes{i}.update_packets_transmitted = nodes{i}.update_packets_transmitted + 1;
-            nodes{node_id}.location_table{i} = nodes{i}.current_position;
-            nodes{node_id}.table_updates = nodes{node_id}.table_updates + 1;
+            % Send reply and update tables
+            [nodes{i},nodes{node_id}] = nodes{i}.sendReply(nodes{node_id});
             
             % TODO: Introduce movement and the delays associated with the
             % route discovery step e.g. route discovery step takes 1s so

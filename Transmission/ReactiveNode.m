@@ -60,11 +60,12 @@ classdef ReactiveNode
             self.message_table{dst.id} = true;
         end
         
-        function [self,position] = broadcast(self)
+        function [self,position,id] = broadcast(self)
             % Method to broadcast packets to the channel to begin route
             % discovery
             self.broadcast_count = self.broadcast_count + 1;
             position = self.current_position;
+            id = self.id;
         end
         
         function self = sendReply(self)

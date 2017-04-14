@@ -40,6 +40,12 @@ for i=1:3
             nodes{node_id}.location_table{i} = nodes{i}.current_position;
             nodes{node_id}.table_updates = nodes{node_id}.table_updates + 1;
             
+            % TODO: Introduce movement and the delays associated with the
+            % route discovery step e.g. route discovery step takes 1s so
+            % the transmission must occur in the next time slice. This is
+            % the tradeoff of speed vs power consumption for active vs
+            % reactive routing
+            
             % Transmit message
             fprintf('Transmitting message \n');
             [nodes{node_id},nodes{i}] = nodes{node_id}.transmit(nodes{i});

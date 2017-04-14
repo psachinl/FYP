@@ -24,7 +24,7 @@ classdef ReactiveNode
         max_speed
         packets_transmitted = 0;
         packets_received = 0;
-        broadcasts_done = 0;
+        broadcast_count = 0;
         replies_sent = 0;
         message_to_transmit = false;
         location_table
@@ -47,7 +47,7 @@ classdef ReactiveNode
     methods
         function power_consumption=get.power_consumption(self)
             % Method to calculate power consumption
-            power_consumption = (self.packets_transmitted + self.update_packets_transmitted) * self.transmission_cost + self.table_updates * self.table_update_cost + self.broadcasts_done * self.broadcast_cost + self.replies_sent * self.reply_cost;
+            power_consumption = (self.packets_transmitted + self.update_packets_transmitted) * self.transmission_cost + self.table_updates * self.table_update_cost + self.broadcast_count * self.broadcast_cost + self.replies_sent * self.reply_cost;
         end
         
         function [self,dst] = transmit(self,dst)
@@ -60,10 +60,11 @@ classdef ReactiveNode
             self.message_table{dst.id} = true;
         end
         
-        function self = broadcast(self)
+        function [self,position] = broadcast(self)
             % Method to broadcast packets to the channel to begin route
             % discovery
-            self.broadcasts_done = self.broadcasts_done + 1;
+            self.broadcast_count = self.broadcast_count + 1;
+            position = self.current_position;
         end
         
         function self = sendReply(self)

@@ -41,6 +41,11 @@ for i=1:3
             % the tradeoff of speed vs power consumption for active vs
             % reactive routing
             
+            % In the next time slice, update location tables if required,
+            % then transmit if the nodes are still within range. 
+            % Repeat broadcast process every n seconds where n can be
+            % varied to find the optimal power consumption.
+            
             % Transmit message
             fprintf('Transmitting message \n');
             [nodes{node_id},nodes{i}] = nodes{node_id}.transmit(nodes{i});

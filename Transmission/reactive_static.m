@@ -1,9 +1,13 @@
 clear
 close all
 
-for i = 1:3
+number_of_nodes = 3;
+
+for i = 1:number_of_nodes
     nodes{i} = ReactiveNode;
     nodes{i}.id = i;
+    nodes{i}.location_table{1,number_of_nodes} = [];
+    nodes{i}.message_table{1,number_of_nodes} = [];
 end
 
 broadcasts = {};
@@ -26,7 +30,19 @@ for i=1:3
         if dist <= 10 % 10m range for Class 2 BLE radios
             inBTRange = true;
             fprintf('Node %d is within BLE range of node %d \n',i,node_id);
-            fprintf('Send reply message with position for transmission \n');
+            fprintf('Sending reply message with position for transmission \n');
+            
+            % Send table updates
+            nodes{i}.location_table{node_id} = nodes{node_id}.current_position;
+            nodes{i}.location_table{i} = nodes{i}.current_position;
+            nodes{i}.table_updates = nodes{i}.table_updates + 1;
+            nodes{i}.update_packets_transmitted = nodes{i}.update_packets_transmitted + 1;
+            nodes{node_id}.location_table{i} = nodes{i}.current_position;
+            nodes{node_id}.table_updates = nodes{node_id}.table_updates + 1;
+            
+            % Transmit message
+            fprintf('Transmitting message \n');
+            [nodes{node_id},nodes{i}] = nodes{node_id}.transmit(nodes{i});
         else
             inBTRange = false;
         end

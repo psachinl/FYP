@@ -76,11 +76,13 @@ classdef ReactiveNode
             self.replies_sent = self.replies_sent + 1;
             
             self.location_table{bc_node.id} = bc_node.current_position;
+            self.message_table{bc_node.id} = true;
             self.location_table{self.id} = self.current_position;
             self.table_updates = self.table_updates + 1;
             self.update_packets_transmitted = self.update_packets_transmitted + 1;
             
             bc_node.location_table{self.id} = self.current_position;
+            bc_node.message_table{self.id} = false;
             bc_node.table_updates = bc_node.table_updates + 1;
         end
         

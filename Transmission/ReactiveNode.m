@@ -27,6 +27,7 @@ classdef ReactiveNode
         broadcast_count = 0;
         replies_sent = 0;
         message_to_transmit = false;
+        ready_to_transmit = false;
         location_table
         message_table
         update_packets_transmitted = 0;
@@ -66,6 +67,7 @@ classdef ReactiveNode
             self.broadcast_count = self.broadcast_count + 1;
             position = self.current_position;
             id = self.id;
+            self.ready_to_transmit = false;
         end
         
         function [self,bc_node] = sendReply(self,bc_node)
@@ -84,6 +86,7 @@ classdef ReactiveNode
             bc_node.location_table{self.id} = self.current_position;
             bc_node.message_table{self.id} = false;
             bc_node.table_updates = bc_node.table_updates + 1;
+            bc_node.ready_to_transmit = true;
         end
         
         function inBTRange = checkBTRange(self,node2)

@@ -81,11 +81,27 @@ for t=1:max_time-1
     % Stationary node to moving node transmission step
     for src=1:number_of_stationary_nodes
         if nodes{src}.message_to_transmit
-            % Source node floods channel with packets
-            % If a destination node is within BLE range, it picks up the
-            % message
+            % Stationary node floods channel with packets
+            % If a node is within BLE range, the message is automatically
+            % received. Link failure for stationary node to moving node
+            % transmission is irrelevant for this simulation since only the
+            % power consumption of moving nodes is relevant
             
-            % TODO: Add transmission via flooding 
+            in_range = getNodesInRange(src,nodes,number_of_stationary_nodes,number_of_nodes);
+            % TODO: Might be worth changing function to only return nodes
+            % without the message to save computation 
+            
+        end
+    end
+    
+    clear start_and_end waypoints main_path
+    
+    % Moving node to moving node transmission step
+    for src=1+number_of_stationary_nodes:number_of_nodes
+        if nodes{src}.message_to_transmit && nodes{src}.ready_to_transmit
+            % Source node floods channel with request packets
+            % If a reply is received, transmission occurs between the two
+            % nodes
             
             % Once the node is determined to be within 10m of the broadcast
             % location, it replies to the src node. Once the reply has been
@@ -98,16 +114,6 @@ for t=1:max_time-1
             % suitable). However, since routes are determined on demand,
             % the link failure rate should be 0 since the route will always
             % be valid just before transmission.
-            
-        end
-    end
-    
-    clear start_and_end waypoints main_path
-    
-    % Moving node to moving node transmission step
-    for src=1+number_of_stationary_nodes:number_of_nodes
-        if nodes{src}.message_to_transmit && nodes{src}.ready_to_transmit
-            % TODO: Add transmission via flooding
         end
     end
 

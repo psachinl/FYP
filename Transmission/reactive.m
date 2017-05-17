@@ -87,9 +87,18 @@ for t=1:max_time-1
             % transmission is irrelevant for this simulation since only the
             % power consumption of moving nodes is relevant
             
+            % Return a cell array containing the node id's for nodes within
+            % BLE range which have not received the message yet
             in_range = getNodesInRange(src,nodes,number_of_stationary_nodes,number_of_nodes);
-            % TODO: Might be worth changing function to only return nodes
-            % without the message to save computation 
+            
+            if ~isempty(in_range) % If nodes are within BLE range
+                % First entry will always update since only nodes without
+                % the message are returned
+                dest = in_range{1}; 
+                
+                % Send reply to broadcasting node and update tables
+                [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src}); 
+            end
             
         end
     end

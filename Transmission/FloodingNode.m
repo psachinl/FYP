@@ -22,10 +22,6 @@ classdef FloodingNode
         packets_transmitted = 0;
         packets_received = 0;
         message_to_transmit = false;
-        location_table
-        message_table
-        update_packets_transmitted = 0;
-        table_updates = 0;
     end
     
     % Private variables
@@ -42,17 +38,11 @@ classdef FloodingNode
     methods
         function power_consumption=get.power_consumption(self)
             % Method to calculate power consumption
-            power_consumption = (self.packets_transmitted + self.update_packets_transmitted) * self.transmission_cost + self.table_updates * self.table_update_cost;
+            power_consumption = self.packets_transmitted * self.transmission_cost;
         end
         
         function [self,dst] = transmit(self,dst)
-            % Method to transmit a message from node to dst node
-            self.packets_transmitted = self.packets_transmitted + 1;
-            dst.packets_received = dst.packets_received + 1;
-            dst.message_to_transmit = true;
-            dst.message_table{dst.id} = true;
-            dst.message_table{self.id} = true;
-            self.message_table{dst.id} = true;
+            % TODO: Implement transmission via flooding
         end
         
         function inBTRange = checkBTRange(self,node2)

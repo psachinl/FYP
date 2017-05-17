@@ -2,7 +2,7 @@ clear
 close all
 
 number_of_moving_groups = 3;
-nodes_per_group = 5;
+nodes_per_group = 1;
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
@@ -17,7 +17,7 @@ start_node = [1,2,1,2]; % Array of start points for each group
 end_node = [4,8,5,8]; % End points
 plot_path = 0; % Whether to plot (1) the movement or not (0)
 min_speed=[1,2,0.8,2.5]; % Min and max speeds for each group
-max_speed=[2,3,1.4,2.5];
+max_speed=[2,2,1.4,2.5];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
 % Set initial values for each stationary node 
@@ -110,40 +110,7 @@ for t=1:max_time-1
     % an update packet to the source node
     
     % Stationary node to moving node transmission step
-    for src=1:number_of_stationary_nodes
-        if nodes{src}.message_to_transmit
-            for dest=1+number_of_stationary_nodes:number_of_nodes
-                if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
-                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-
-                    % Remove duplicates that were added to avoid indexing
-                    % errors
-                    nodes{dest} = removeDuplicates(nodes{dest});
-                    
-                    % Calculate path to new exit point, update node
-                    % end_point
-                    [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,edge_weights,end_node(nodes{dest}.group),new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions);
-                    start_and_end(1,:) = nodes{dest}.start_point; % Keep original start point
-                    nodes{dest}.end_point = start_and_end(2,:);
-                    
-                    % Append overall path to existing path
-                    overall_path = [main_path; start_and_end(end,:)];
-                    nodes{dest}.position{4} = [nodes{dest}.position{4};overall_path];
-                    
-                    % Update remaining position cells
-                    nodes{dest}.position{1} = start_and_end;
-                    nodes{dest}.position{2} = [nodes{dest}.position{2};waypoints];
-                    nodes{dest}.position{3} = [nodes{dest}.position{3};main_path];
-                    
-                    if debug
-                        fprintf('Time = %d \n',t);
-                        fprintf('Node %d position changed after transmission from node %d \n',dest,src);
-                        fprintf('Node %d position{4} length = %d \n',dest,length(nodes{dest}.position{4}));
-                    end
-                end
-            end
-        end
-    end
+    nodes = stationary2MovingTransmission(nodes,number_of_stationary_nodes,number_of_nodes,edge_start_points,edge_end_points,edge_weights,end_node,new_exit_point,map_node_positions,debug,t);
     
     clear start_and_end waypoints main_path
     

@@ -81,27 +81,7 @@ for t=1:max_time-1
     % cycle can be done in 1s.
     
     % Stationary node to moving node transmission step
-    for src=1:number_of_stationary_nodes
-        if nodes{src}.message_to_transmit
-            % Stationary node floods channel with packets
-            % If a node is within BLE range, the message is automatically
-            % received. Link failure for stationary node to moving node
-            % transmission is irrelevant for this simulation since only the
-            % power consumption of moving nodes is relevant
-            
-            % Return a cell array containing the node id's for nodes within
-            % BLE range which have not received the message yet
-            in_range = getNodesInRange(src,nodes,number_of_stationary_nodes,number_of_nodes);
-            
-            % Transmit message to moving nodes within range
-            if ~isempty(in_range)
-                for dest=in_range
-                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-                end
-            end
-            
-        end
-    end
+    nodes = stationary2MovingTransmission(nodes,number_of_stationary_nodes,number_of_nodes,edge_start_points,edge_end_points,edge_weights,end_node,new_exit_point,map_node_positions,debug,t);
     
     clear start_and_end waypoints main_path
     

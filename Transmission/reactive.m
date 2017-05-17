@@ -8,6 +8,7 @@ number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
 max_time = 400;
 debug = true; % If true, text printed to console
+plot_path = false; % If true, node paths are plotted
 
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
@@ -15,7 +16,6 @@ edge_end_points =   [3 4 5 6 7 2 6 5 8 7];
 edge_weights = [579 40 128 267 163 250 0 115 18 0];
 start_node = [1,2,1,2]; % Array of start points for each group
 end_node = [4,8,5,8]; % End points
-plot_path = 0; % Whether to plot (1) the movement or not (0)
 min_speed=[1,2,0.8,2.5]; % Min and max speeds for each group
 max_speed=[2,3,1.4,2.5];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
@@ -75,8 +75,10 @@ for t=1:max_time-1
     
     % Transmit message packets
 
-    % The reactive routing algorithm floods the channel with message
-    % packets to transmit the message
+    % The reactive routing algorithm floods the channel with route request
+    % packets. Once a route has been discovered, the message is
+    % transmitted. This simulation will assume only 1 discover and transmit
+    % cycle can be done in 1s.
     
     % Stationary node to moving node transmission step
     for src=1:number_of_stationary_nodes
@@ -91,13 +93,11 @@ for t=1:max_time-1
             % BLE range which have not received the message yet
             in_range = getNodesInRange(src,nodes,number_of_stationary_nodes,number_of_nodes);
             
-            if ~isempty(in_range) % If nodes are within BLE range
-                % First entry will always update since only nodes without
-                % the message are returned
-                dest = in_range{1}; 
-                
-                % Send reply to broadcasting node and update tables
-                [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src}); 
+            % Transmit message to moving nodes within range
+            if ~isempty(in_range)
+                for dest=in_range
+                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                end
             end
             
         end
@@ -123,6 +123,19 @@ for t=1:max_time-1
             % suitable). However, since routes are determined on demand,
             % the link failure rate should be 0 since the route will always
             % be valid just before transmission.
+            
+%             if ~isempty(in_range) % If nodes are within BLE range
+%                 % First entry will always update since only nodes without
+%                 % the message are returned
+%                 dest = in_range{1}; 
+%                 
+%                 % Send reply to broadcasting node and update tables
+%                 [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
+%                 
+%                 % Transmit from src to dest
+%                 
+%             end
+
         end
     end
 

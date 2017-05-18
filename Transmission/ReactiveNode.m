@@ -10,6 +10,7 @@ classdef ReactiveNode
         broadcast_cost = 2;             % 4.0*transmission_cost
         reply_cost = 0.5;               % 1.0*transmission_cost
         transmission_speed = 5;
+        transmissions_per_second = 1;   % Maximum number of transmissions per second
     end
     
     % Public variables
@@ -59,6 +60,7 @@ classdef ReactiveNode
             dst.message_table{dst.id} = true;
             dst.message_table{self.id} = true;
             self.message_table{dst.id} = true;
+            self.ready_to_transmit = false;
         end
         
         function [self,position,id] = broadcast(self)

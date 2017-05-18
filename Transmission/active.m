@@ -2,7 +2,7 @@ clear
 close all
 
 number_of_moving_groups = 3;
-nodes_per_group = 5;
+nodes_per_group = 2;
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
@@ -66,7 +66,7 @@ for i=1+number_of_stationary_nodes:number_of_nodes
             nodes{i}.message_table{j} = nodes{j}.message_to_transmit;
             nodes{i}.table_updates = nodes{i}.table_updates + 1;
             nodes{j}.update_packets_transmitted = nodes{j}.update_packets_transmitted + 1;
-        elseif i == j % Node updates it's own table entries, no need for packet transmission
+        elseif i == j % Node updates its own table entries, no need for packet transmission
             nodes{i}.location_table{i} = nodes{i}.current_position;
             nodes{i}.message_table{i} = nodes{i}.message_to_transmit;
             nodes{i}.table_updates = nodes{i}.table_updates + 1;
@@ -111,39 +111,11 @@ for t=1:max_time-1
                             fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
                         end
                         
+                        % Transmit message to destination node
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
                         
-                        % Calculate path to nearest waypoint
-                        [~,waypoints_w,main_path_w,overall_path_w,nearest_waypoint] = move2Waypoint(nodes{dest},map_node_positions);
-                        
-                        % Calculate path from nearest waypoint to new exit
-                        % point
-                        [start_and_end,waypoints,main_path] = SPMBM(edge_start_points,edge_end_points,edge_weights,nearest_waypoint,new_exit_point,nodes{dest}.min_speed,nodes{dest}.max_speed,map_node_positions);
-                        overall_path = [start_and_end(1,:); main_path; start_and_end(end,:)];
-                        
-                        % Combine paths to find overall path, update
-                        % end_point
-                        start_and_end(1,:) = nodes{dest}.start_point; % Keep original start point
-                        nodes{dest}.end_point = start_and_end(2,:);
-                        waypoints = [waypoints_w;waypoints];
-                        main_path = [main_path_w;main_path];
-                        overall_path = [overall_path_w;overall_path];
-
-                        % Remove duplicates that were added to avoid indexing
-                        % errors
-                        nodes{dest} = removeDuplicates(nodes{dest});
-                        
-                        % Truncate paths so remaining steps are removed
-                        nodes{dest}.position{4} = nodes{dest}.position{4}(1:t,:);
-                        nodes{dest}.position{3} = nodes{dest}.position{3}(1:t-1,:);
-                        
-                        % Append new path to existing node path
-                        nodes{dest}.position{4} = [nodes{dest}.position{4};overall_path];
-                    
-                        % Update remaining position cells
-                        nodes{dest}.position{1} = start_and_end;
-                        nodes{dest}.position{2} = [nodes{dest}.position{2};waypoints];
-                        nodes{dest}.position{3} = [nodes{dest}.position{3};main_path];
+                        % Update paths for destination node
+                        nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
 
                     elseif nodes{src}.checkBTRange(nodes{dest}) && nodes{dest}.message_to_transmit
                         nodes{src}.message_table{dest} = true;

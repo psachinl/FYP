@@ -71,39 +71,53 @@ for t=1:max_time-1
     
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
-        if nodes{src}.message_to_transmit && nodes{src}.ready_to_transmit
-            % Source node floods channel with request packets
-            % If a reply is received, transmission occurs between the two
-            % nodes
-            
-            % Once the node is determined to be within 10m of the broadcast
-            % location, it replies to the src node. Once the reply has been
-            % recieved, the message will be transmitted. The timeout will
-            % have to be < 1s as the location of the node will change after
-            % 1s meaning the route may no longer be valid.
-            
-            % TODO: Model link state failure using a random variable with
-            % normal distribution (other distributions may be more 
-            % suitable). However, since routes are determined on demand,
-            % the link failure rate should be 0 since the route will always
-            % be valid just before transmission.
-            
-%             if ~isempty(in_range) % If nodes are within BLE range
-%                 % First entry will always update since only nodes without
-%                 % the message are returned
-%                 dest = in_range{1}; 
-%                 
-%                 % Send reply to broadcasting node and update tables
-%                 [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
-%                 
-%                 % Transmit from src to dest
-%                 
-%             end
+        if nodes{src}.message_to_transmit
+            % Source node broadcasts route request packets         
+            [nodes{src},~,~] = nodes{src}.broadcast;
+            % TODO: Implement some sort of delay to prevent
+            % broadcasting every second although that can be a new
+            % algorithm
 
+            % Check if any nodes are within BLE range
+            in_range = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);
+
+            % Send replies if nodes are within BLE range
+            if ~isempty(in_range)
+                % Vector will always update since only nodes without the
+                % message are returned
+                
+                for i=1:nodes{src}.transmissions_per_second
+                    dest = in_range(i); 
+
+                    % Send reply to broadcasting node and update tables
+                    [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
+
+                    % Transmit from src to dest
+                    
+                    if debug
+                        fprintf('Time = %d \n',t);
+                        fprintf('Transmitting from node %d to %d \n',src,dest);
+                        fprintf('Node %d position = [%d,%d] \n',src,nodes{src}.current_position(1),nodes{src}.current_position(2));
+                        fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
+                    end
+                    
+                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+
+                    % Update paths for destination node
+                    nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
+                    
+                    
+                    % TODO: Model link state failure using a random variable with
+                    % normal distribution (other distributions may be more 
+                    % suitable). However, since routes are determined on demand,
+                    % the link failure rate should be 0 since the route will always
+                    % be valid just before transmission.
+                end
+            end          
         end
     end
 
-    clear src dest start_and_end start_and_end_w waypoints waypoints_w main_path main_path_w overall_path overall_path_w
+    clear src dest start_and_end start_and_end_w waypoints waypoints_w main_path main_path_w overall_path overall_path_w i
     
     % Move nodes to next position in path
     

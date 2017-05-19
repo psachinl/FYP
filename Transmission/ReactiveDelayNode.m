@@ -12,7 +12,7 @@ classdef ReactiveDelayNode
         reply_cost = 0.5;               % 1.0*transmission_cost
         transmission_speed = 5;
         transmissions_per_second = 1;   % Maximum number of transmissions per second
-        broadcast_delay = 10;           % Minimum delay in seconds between broadcasts
+        broadcast_delay = 5;           % Minimum delay in seconds between broadcasts
     end
     
     % Public variables
@@ -28,6 +28,7 @@ classdef ReactiveDelayNode
         packets_transmitted = 0;
         packets_received = 0;
         broadcast_count = 0;
+        last_broadcast_time = 0;
         replies_sent = 0;
         message_to_transmit = false;
         ready_to_transmit = false;
@@ -65,13 +66,14 @@ classdef ReactiveDelayNode
             self.ready_to_transmit = false;
         end
         
-        function [self,position,id] = broadcast(self)
+        function [self,position,id] = broadcast(self,t)
             % Method to broadcast packets to the channel to begin route
             % discovery
             self.broadcast_count = self.broadcast_count + 1;
             position = self.current_position;
             id = self.id;
             self.ready_to_transmit = false;
+            self.last_broadcast_time = t;
         end
         
         function [self,bc_node] = sendReply(self,bc_node)

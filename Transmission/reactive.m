@@ -86,7 +86,7 @@ for t=1:max_time-1
                 % Vector will always update since only nodes without the
                 % message are returned
                 
-                for i=1:nodes{src}.transmissions_per_second
+                for i=1:min(nodes{src}.transmissions_per_second,length(in_range))
                     dest = in_range(i); 
 
                     % Send reply to broadcasting node and update tables

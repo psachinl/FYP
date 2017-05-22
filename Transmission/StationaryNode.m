@@ -10,6 +10,7 @@ classdef StationaryNode
     % Public variables
     properties
         id
+        group
         position = {};
         current_position
         packets_transmitted = 0;
@@ -28,6 +29,13 @@ classdef StationaryNode
     
     % Public methods
     methods
+        
+        function self = initialise(self,n,group,map_node_positions,end_node)
+            % Method to initialise stationary nodes for a simulation
+            self.id = n;
+            self.group = group;
+            self.current_position = [map_node_positions(end_node(n),1),map_node_positions(end_node(n),2)];
+        end
         
         function [self,dst] = transmit(self,dst)
             % Method to transmit a message from node to dst node

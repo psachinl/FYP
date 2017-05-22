@@ -11,6 +11,7 @@ classdef LMRNode
         reply_cost = 0.5;               % 1.0*transmission_cost
         transmission_speed = 5;
         transmissions_per_second = 1;   % Maximum number of transmissions per second
+        route_discovery_delay = 5;     % Minimum delay in seconds between route discoveries
     end
     
     % Public variables
@@ -27,10 +28,12 @@ classdef LMRNode
         packets_received = 0;
         broadcast_count = 0;
         replies_sent = 0;
+        failed_transmissions = 0;
         message_to_transmit = false;
         ready_to_transmit = false;
         location_table
         message_table
+        route_cache = [];
         update_packets_transmitted = 0;
         table_updates = 0;
     end

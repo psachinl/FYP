@@ -12,7 +12,7 @@ classdef ReactiveDelayNode
         reply_cost = 0.5;               % 1.0*transmission_cost
         transmission_speed = 5;
         transmissions_per_second = 1;   % Maximum number of transmissions per second
-        broadcast_delay = 5;           % Minimum delay in seconds between broadcasts
+        broadcast_delay = 5;            % Minimum delay in seconds between broadcasts
     end
     
     % Public variables

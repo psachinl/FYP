@@ -10,6 +10,10 @@ max_time = 400;
 debug = true; % If true, text printed to console
 plot_path = false; % If true, node paths are plotted
 
+% If result flag is true, final result is printed to console
+print_timing_result = true;
+print_power_result = false;
+
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
 edge_end_points =   [3 4 5 6 7 2 6 5 8 7];
@@ -30,6 +34,9 @@ end
 % Station in bottom left of grid is closed
 nodes{2}.message_to_transmit = true;
 new_exit_point = 4;
+test_group = 2; % Group 2 is moving towards the closed station
+first_transmission_time = -1; % Initialise to -1 for error handling
+last_transmission_time = -1;
 
 % Set initial values for each moving node e.g. start point, end point etc.
 for m = 1:number_of_moving_groups
@@ -127,7 +134,9 @@ for t=1:max_time-1
         % Move node to next position
         nodes{n}.current_position = [nodes{n}.position{4}(t+1,1),nodes{n}.position{4}(t+1,2)];
     end
-    
+    [first_transmission_time,last_transmission_time] = storeTransmissionTimes(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,t);
 end
 
 clear t n k
+
+[group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);

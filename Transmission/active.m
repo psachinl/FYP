@@ -8,6 +8,7 @@ number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
 max_time = 400;
 debug = true; % If true, text printed to console
+plot_path = false; % If true, initial node paths are plotted
 
 % If result flag is true, final result is printed to console
 print_timing_result = true;
@@ -19,7 +20,6 @@ edge_end_points =   [3 4 5 6 7 2 6 5 8 7];
 edge_weights = [579 40 128 267 163 250 0 115 18 0];
 start_node = [1,2,1,2]; % Array of start points for each group
 end_node = [4,8,5,8]; % End points
-plot_path = 0; % Whether to plot (1) the movement or not (0)
 min_speed=[1,2,0.8,2.5]; % Min and max speeds for each group
 max_speed=[2,3,1.4,2.5];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
@@ -158,22 +158,5 @@ for t=1:max_time-1
 end
 
 clear t n k
-
-% if first_transmission_time > 0 && last_transmission_time > 0
-%     group_transmission_time = last_transmission_time - first_transmission_time;
-% else
-%     % -1 indicates the message has not fully propagated within the test
-%     % group
-%     group_transmission_time = -1;
-% end
-% 
-% if print_timing_result
-%     fprintf('Group %d overall transmission time = %d seconds \n',test_group,group_transmission_time)
-% end
-% 
-% if print_power_result
-%     % TODO: Write a function to calculate the total power consumption of
-%     % the simulation
-% end
 
 [group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);

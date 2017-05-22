@@ -99,8 +99,10 @@ for t=1:max_time-1
                 end
             else % Route cache not empty
                 % Transmit to nodes where routes are present in the route cache
-                
+                remaining_routes = nodes{src}.route_cache;
                 for dest=1:length(nodes{src}.route_cache)
+                    % TODO: Implement a limit on the number of
+                    % transmissions that can occur within a time slice (1s)
                     if checkBTRange(nodes{src},nodes{dest})
                         % If route is still valid, transmit
                         if debug
@@ -120,9 +122,12 @@ for t=1:max_time-1
                         nodes{src}.failed_transmissions = nodes{src}.failed_transmissions + 1;
                     end
                     % Remove routes from route cache once transmission has
-                    % been attempted
-%                     remaining_routes = [];
+                    % been attempted to that node
+                    remaining_routes = remaining_routes(remaining_routes~=dest);
                 end
+                % Only keep the remaining (unused) routes in the cache for 
+                % transmission in the next time slice
+                nodes{src}.route_cache = remaining_routes;
             end
         end
     end

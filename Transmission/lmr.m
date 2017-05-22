@@ -72,48 +72,29 @@ for t=1:max_time-1
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
         if nodes{src}.message_to_transmit
-            % Source node broadcasts route request packets         
-            [nodes{src},~,~] = nodes{src}.broadcast;
-            % TODO: Implement some sort of delay to prevent
-            % broadcasting every second although that can be a new
-            % algorithm
-
-            % Check if any nodes are within BLE range
-            in_range = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);
-
-            % Send replies if nodes are within BLE range
-            if ~isempty(in_range)
-                % Vector will always update since only nodes without the
-                % message are returned
+            if isempty(nodes{src}.route_cache)
+                % Source node broadcasts route request packets to determine
+                % new routes if the route cache is empty
+                [nodes{src},~,~] = nodes{src}.broadcast(t);
                 
-                for i=1:min(nodes{src}.transmissions_per_second,length(in_range))
-                    dest = in_range(i); 
+                % Check if any nodes are within BLE range
+                nodes{src}.route_cache = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);
+                
+                % Send replies if nodes are within BLE range
+                if ~isempty(nodes{src}.route_cache)
+                    % Vector will always update since only nodes without the
+                    % message are returned (or will be empty)
 
-                    % Send reply to broadcasting node and update tables
-                    [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
+                    for i=1:length(nodes{src}.route_cache)
+                        dest = nodes{src}.route_cache(i);
 
-                    % Transmit from src to dest
-                    
-                    if debug
-                        fprintf('Time = %d \n',t);
-                        fprintf('Transmitting from node %d to %d \n',src,dest);
-                        fprintf('Node %d position = [%d,%d] \n',src,nodes{src}.current_position(1),nodes{src}.current_position(2));
-                        fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
+                        % Send reply to broadcasting node and update tables
+                        [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
                     end
-                    
-                    [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
-
-                    % Update paths for destination node
-                    nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
-                    
-                    
-                    % TODO: Model link state failure using a random variable with
-                    % normal distribution (other distributions may be more 
-                    % suitable). However, since routes are determined on demand,
-                    % the link failure rate should be 0 since the route will always
-                    % be valid just before transmission.
                 end
-            end          
+            end
+            
+            % Transmit to nodes where routes are present in the route cache
         end
     end
 

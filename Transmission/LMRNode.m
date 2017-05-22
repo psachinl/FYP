@@ -11,7 +11,7 @@ classdef LMRNode
         reply_cost = 0.5;               % 1.0*transmission_cost
         transmission_speed = 5;
         transmissions_per_second = 1;   % Maximum number of transmissions per second
-        route_discovery_delay = 5;     % Minimum delay in seconds between route discoveries
+        route_discovery_delay = 5;      % Minimum delay in seconds between route discoveries
     end
     
     % Public variables
@@ -27,6 +27,7 @@ classdef LMRNode
         packets_transmitted = 0;
         packets_received = 0;
         broadcast_count = 0;
+        last_route_request_time = 0;
         replies_sent = 0;
         failed_transmissions = 0;
         message_to_transmit = false;
@@ -66,13 +67,24 @@ classdef LMRNode
             self.ready_to_transmit = false;
         end
         
-        function [self,position,id] = broadcast(self)
+        function [self,position,id] = broadcast(self,t)
             % Method to broadcast packets to the channel to begin route
             % discovery
             self.broadcast_count = self.broadcast_count + 1;
             position = self.current_position;
             id = self.id;
             self.ready_to_transmit = false;
+            self.last_route_request_time = t;
+        end
+        
+        function blocked = checkRouteRequestBlocked(self,t)
+            % Method to check if the node is within the blocking period for
+            % route discovery
+            if t-self.last_route_request_time < self.route_discovery_delay
+                blocked = true;
+            else
+                blocked = false;
+            end
         end
         
         function [self,bc_node] = sendReply(self,bc_node)

@@ -30,6 +30,9 @@ end
 % Station in bottom left of grid is closed
 nodes{2}.message_to_transmit = true;
 new_exit_point = 4;
+test_group = 2; % Group 2 is moving towards the closed station
+first_transmission_time = -1; % Initialise to -1 for error handling
+last_transmission_time = -1;
 
 % Set initial values for each moving node e.g. start point, end point etc.
 for m = 1:number_of_moving_groups
@@ -147,7 +150,13 @@ for t=1:max_time-1
             end
         end
     end
-    
+    % Store first and last transmission times for the test group to measure
+    % transmission time
+    if getNumberOfNodesWithMessage(nodes,test_group,number_of_stationary_nodes,nodes_per_group) == nodes_per_group && last_transmission_time == -1
+        last_transmission_time = t;
+    elseif getNumberOfNodesWithMessage(nodes,test_group,number_of_stationary_nodes,nodes_per_group) > 0 && first_transmission_time == -1
+        first_transmission_time = t;
+    end
 end
 
 clear t n k

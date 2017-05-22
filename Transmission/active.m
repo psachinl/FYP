@@ -9,6 +9,10 @@ number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
 max_time = 400;
 debug = true; % If true, text printed to console
 
+% If result flag is true, final result is printed to console
+print_timing_result = true;
+print_power_result = false;
+
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
 edge_end_points =   [3 4 5 6 7 2 6 5 8 7];
@@ -150,13 +154,24 @@ for t=1:max_time-1
             end
         end
     end
-    % Store first and last transmission times for the test group to measure
-    % transmission time
-    if getNumberOfNodesWithMessage(nodes,test_group,number_of_stationary_nodes,nodes_per_group) == nodes_per_group && last_transmission_time == -1
-        last_transmission_time = t;
-    elseif getNumberOfNodesWithMessage(nodes,test_group,number_of_stationary_nodes,nodes_per_group) > 0 && first_transmission_time == -1
-        first_transmission_time = t;
-    end
+    [first_transmission_time,last_transmission_time] = storeTransmissionTimes(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,t);
 end
 
 clear t n k
+
+if first_transmission_time > 0 && last_transmission_time > 0
+    group_transmission_time = last_transmission_time - first_transmission_time;
+else
+    % -1 indicates the message has not fully propagated within the test
+    % group
+    group_transmission_time = -1;
+end
+
+if print_timing_result
+    fprintf('Group %d overall transmission time = %d seconds \n',test_group,group_transmission_time)
+end
+
+if print_power_result
+    % TODO: Write a function to calculate the total power consumption of
+    % the simulation
+end

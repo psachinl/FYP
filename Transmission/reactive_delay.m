@@ -20,11 +20,11 @@ min_speed=[1,2,0.8,2.5]; % Min and max speeds for each group
 max_speed=[2,3,1.4,2.5];
 map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
-% Set initial values for each stationary node 
+% Set initial values for each stationary node
+stationary_group = 0;
 for n = 1:number_of_stationary_nodes
     nodes{n} = StationaryNode;
-    nodes{n}.id = n;
-    nodes{n}.current_position = [map_node_positions(end_node(n),1),map_node_positions(end_node(n),2)];
+    nodes{n} = nodes{n}.initialise(n,stationary_group,map_node_positions,end_node);
 end
 
 % Station in bottom left of grid is closed

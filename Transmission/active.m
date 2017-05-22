@@ -159,19 +159,21 @@ end
 
 clear t n k
 
-if first_transmission_time > 0 && last_transmission_time > 0
-    group_transmission_time = last_transmission_time - first_transmission_time;
-else
-    % -1 indicates the message has not fully propagated within the test
-    % group
-    group_transmission_time = -1;
-end
+% if first_transmission_time > 0 && last_transmission_time > 0
+%     group_transmission_time = last_transmission_time - first_transmission_time;
+% else
+%     % -1 indicates the message has not fully propagated within the test
+%     % group
+%     group_transmission_time = -1;
+% end
+% 
+% if print_timing_result
+%     fprintf('Group %d overall transmission time = %d seconds \n',test_group,group_transmission_time)
+% end
+% 
+% if print_power_result
+%     % TODO: Write a function to calculate the total power consumption of
+%     % the simulation
+% end
 
-if print_timing_result
-    fprintf('Group %d overall transmission time = %d seconds \n',test_group,group_transmission_time)
-end
-
-if print_power_result
-    % TODO: Write a function to calculate the total power consumption of
-    % the simulation
-end
+[group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);

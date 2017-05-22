@@ -73,27 +73,31 @@ for t=1:max_time-1
     for src=1+number_of_stationary_nodes:number_of_nodes
         if nodes{src}.message_to_transmit
             if isempty(nodes{src}.route_cache)
-                % Source node broadcasts route request packets to determine
-                % new routes if the route cache is empty
-                [nodes{src},~,~] = nodes{src}.broadcast(t);
-                
-                % Check if any nodes are within BLE range
-                nodes{src}.route_cache = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);
-                
-                % Send replies if nodes are within BLE range
-                if ~isempty(nodes{src}.route_cache)
-                    % Vector will always update since only nodes without the
-                    % message are returned (or will be empty)
+                if ~nodes{src}.checkRouteRequestBlocked(t)
+                    % Source node broadcasts route request packets to determine
+                    % new routes if the route cache is empty and the node is
+                    % not within the blocking period for transmitting route
+                    % request packets
+                    [nodes{src},~,~] = nodes{src}.broadcast(t);
 
-                    for i=1:length(nodes{src}.route_cache)
-                        dest = nodes{src}.route_cache(i);
+                    % Check if any nodes are within BLE range
+                    nodes{src}.route_cache = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);
 
-                        % Send reply to broadcasting node and update tables
-                        [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
+                    % Send replies if nodes are within BLE range
+                    if ~isempty(nodes{src}.route_cache)
+                        % Vector will always update since only nodes without the
+                        % message are returned (or will be empty)
+
+                        for i=1:length(nodes{src}.route_cache)
+                            dest = nodes{src}.route_cache(i);
+
+                            % Send reply to broadcasting node and update tables
+                            [nodes{dest},nodes{src}] = nodes{dest}.sendReply(nodes{src});
+                        end
                     end
                 end
             end
-            
+        else
             % Transmit to nodes where routes are present in the route cache
         end
     end

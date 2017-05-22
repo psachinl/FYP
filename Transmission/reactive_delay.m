@@ -73,8 +73,7 @@ for t=1:max_time-1
     for src=1+number_of_stationary_nodes:number_of_nodes
         % Check whether the node is still within the blocking period from
         % the last broadcast of routing request packets
-        blocked = checkBlockingPeriod(nodes{src},t);
-        if nodes{src}.message_to_transmit && ~blocked
+        if nodes{src}.message_to_transmit && ~nodes{src}.checkBlockingPeriod(t)
             % Source node broadcasts route request packets         
             [nodes{src},~,~] = nodes{src}.broadcast(t);
             % TODO: Implement some sort of delay to prevent

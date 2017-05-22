@@ -76,6 +76,16 @@ classdef ReactiveDelayNode
             self.last_broadcast_time = t;
         end
         
+        function blocked = checkBlockingPeriod(self,t)
+            % Method to check whether the node is within the blocking
+            % period for broadcasting route request packets
+            if t-self.last_broadcast_time < self.broadcast_delay
+                blocked = true;
+            else
+                blocked = false;
+            end
+        end
+        
         function [self,bc_node] = sendReply(self,bc_node)
             % Method to reply to broadcast so transmission can begin
             % Self is the replying node i.e. destination node for the

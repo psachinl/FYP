@@ -60,9 +60,10 @@ for t=1:max_time-1
     % Transmit message packets
 
     % The reactive routing algorithm floods the channel with route request
-    % packets. Once a route has been discovered, the message is
-    % transmitted. This simulation will assume only 1 discover and transmit
-    % cycle can be done in 1s.
+    % packets. Once routes have been discovered, transmission can occur.
+    % For moving node to moving node transmission, route discovery takes
+    % the entire time slice so the node can either update routes or
+    % transmit packets within a time slice..
     
     % Stationary node to moving node transmission step
     nodes = stationary2MovingTransmission(nodes,number_of_stationary_nodes,number_of_nodes,edge_start_points,edge_end_points,edge_weights,end_node,new_exit_point,map_node_positions,debug,t);
@@ -96,9 +97,33 @@ for t=1:max_time-1
                         end
                     end
                 end
+            else % Route cache not empty
+                % Transmit to nodes where routes are present in the route cache
+                
+                for dest=1:length(nodes{src}.route_cache)
+                    if checkBTRange(nodes{src},nodes{dest})
+                        % If route is still valid, transmit
+                        if debug
+                            fprintf('Time = %d \n',t);
+                            fprintf('Transmitting from node %d to %d \n',src,dest);
+                            fprintf('Node %d position = [%d,%d] \n',src,nodes{src}.current_position(1),nodes{src}.current_position(2));
+                            fprintf('Node %d position = [%d,%d] \n',dest,nodes{dest}.current_position(1),nodes{dest}.current_position(2));
+                        end
+                    
+                        [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+
+                        % Update paths for destination node
+                        nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
+                    else
+                        % If the route is no longer valid, transmission
+                        % fails
+                        nodes{src}.failed_transmissions = nodes{src}.failed_transmissions + 1;
+                    end
+                    % Remove routes from route cache once transmission has
+                    % been attempted
+%                     remaining_routes = [];
+                end
             end
-        else
-            % Transmit to nodes where routes are present in the route cache
         end
     end
 

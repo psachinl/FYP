@@ -1,5 +1,6 @@
 clear
 close all
+tic;
 
 number_of_moving_groups = 3;
 nodes_per_group = 2;
@@ -131,3 +132,4 @@ end
 clear t n k
 
 [group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);
+toc;

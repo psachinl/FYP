@@ -1,13 +1,14 @@
 clear
 close all
+tic;
 
 number_of_moving_groups = 3;
-nodes_per_group = 2;
+nodes_per_group = 200;
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
-max_time = 400;
-debug = true; % If true, text printed to console
+max_time = 300;
+debug = false; % If true, text printed to console
 plot_path = false; % If true, initial node paths are plotted
 
 % If result flag is true, final result is printed to console
@@ -160,3 +161,4 @@ end
 clear t n k
 
 [group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);
+toc;

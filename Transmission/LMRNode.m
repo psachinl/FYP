@@ -115,7 +115,7 @@ classdef LMRNode
 
             dist = calculateDistance(self,node2);
 
-            if dist <= 10 % 10m range for Class 2 BLE radios
+            if dist <= self.max_transmission_distance
                 inBTRange = true;
             else
                 inBTRange = false;

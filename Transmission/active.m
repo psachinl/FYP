@@ -147,7 +147,7 @@ for t=1:max_time-1
         nodes{n}.table_updates = nodes{n}.table_updates + 1;
         
         % Send update packets to nearby nodes to update their location
-        % tables
+        % tables but only if the node has moved from its previous position
         for k=1+number_of_stationary_nodes:number_of_nodes
             if k ~= n && nodes{n}.checkBTRange(nodes{k}) && ~isequal(nodes{n}.current_position,nodes{n}.old_pos)
                 nodes{n}.update_packets_transmitted = nodes{n}.update_packets_transmitted + 1;

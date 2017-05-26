@@ -82,9 +82,6 @@ for t=1:max_time-1
         if nodes{src}.message_to_transmit
             % Source node broadcasts route request packets         
             [nodes{src},~,~] = nodes{src}.broadcast;
-            % TODO: Implement some sort of delay to prevent
-            % broadcasting every second although that can be a new
-            % algorithm
 
             % Check if any nodes are within BLE range
             in_range = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);

@@ -84,9 +84,6 @@ for t=1:max_time-1
         if nodes{src}.message_to_transmit && ~nodes{src}.checkBlockingPeriod(t)
             % Source node broadcasts route request packets         
             [nodes{src},~,~] = nodes{src}.broadcast(t);
-            % TODO: Implement some sort of delay to prevent
-            % broadcasting every second although that can be a new
-            % algorithm
 
             % Check if any nodes are within BLE range
             in_range = getNodesInRange(nodes{src}.id,nodes,number_of_stationary_nodes,number_of_nodes);
@@ -115,13 +112,6 @@ for t=1:max_time-1
 
                     % Update paths for destination node
                     nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
-                    
-                    
-                    % TODO: Model link state failure using a random variable with
-                    % normal distribution (other distributions may be more 
-                    % suitable). However, since routes are determined on demand,
-                    % the link failure rate should be 0 since the route will always
-                    % be valid just before transmission.
                 end
             end          
         end

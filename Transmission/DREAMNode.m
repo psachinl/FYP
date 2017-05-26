@@ -15,6 +15,7 @@ classdef DREAMNode
         group
         position = {};
         current_position
+        old_pos
         start_point
         end_point
         min_speed

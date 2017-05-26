@@ -3,7 +3,7 @@ close all
 tic;
 
 number_of_moving_groups = 3;
-nodes_per_group = 200;
+nodes_per_group = 2;
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
@@ -144,11 +144,12 @@ for t=1:max_time-1
         nodes{n}.current_position = [nodes{n}.position{4}(t+1,1),nodes{n}.position{4}(t+1,2)];
         nodes{n}.location_table{n} = nodes{n}.current_position;
         nodes{n}.table_updates = nodes{n}.table_updates + 1;
+        nodes{n}.old_pos = [nodes{n}.position{4}(t,1),nodes{n}.position{4}(t,2)];
         
         % Send update packets to nearby nodes to update their location
         % tables
         for k=1+number_of_stationary_nodes:number_of_nodes
-            if k ~= n && nodes{n}.checkBTRange(nodes{k})
+            if k ~= n && nodes{n}.checkBTRange(nodes{k}) && ~isequal(nodes{n}.current_position,nodes{n}.old_pos)
                 nodes{n}.update_packets_transmitted = nodes{n}.update_packets_transmitted + 1;
                 nodes{k}.location_table{n} = nodes{n}.current_position;
                 nodes{k}.table_updates = nodes{k}.table_updates + 1;

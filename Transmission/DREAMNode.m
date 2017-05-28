@@ -7,6 +7,7 @@ classdef DREAMNode
         transmission_cost = 0.5;        % Power consumption in Watts
         table_update_cost = 0.25;
         transmission_speed = 5;
+        max_transmissions_per_sec = 10; % Maximum message transmissions per time slice
     end
     
     % Public variables
@@ -21,6 +22,7 @@ classdef DREAMNode
         min_speed
         max_speed
         packets_transmitted = 0;
+        packets_transmitted_slice = 0; % Packets transmitted in the current time slice
         packets_received = 0;
         message_to_transmit = false;
         location_table

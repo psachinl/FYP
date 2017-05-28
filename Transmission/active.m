@@ -3,7 +3,7 @@ close all
 tic;
 
 number_of_moving_groups = 3;
-nodes_per_group = 2;
+nodes_per_group = 200;
 number_of_stationary_nodes = 3;
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
@@ -14,6 +14,10 @@ plot_path = false; % If true, initial node paths are plotted
 % If result flag is true, final result is printed to console
 print_timing_result = true;
 print_power_result = false;
+
+% If quit flag is true, the simulation will exit once all nodes in the test
+% group have recieved the message
+quit_simulation_early = true;
 
 nodes{1,number_of_nodes} = []; % Cell array to store all nodes
 edge_start_points = [1 3 3 2 6 1 7 4 7 8];
@@ -108,9 +112,10 @@ for t=1:max_time-1
     
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
+        nodes{src}.packets_transmitted_slice = 0;
         if nodes{src}.message_to_transmit
             for dest=1+number_of_stationary_nodes:number_of_nodes
-                if dest ~= src
+                if dest ~= src && nodes{src}.packets_transmitted_slice < nodes{src}.max_transmissions_per_sec
                     if nodes{src}.checkBTRange(nodes{dest}) && ~nodes{dest}.message_to_transmit
                         if debug
                             fprintf('Time = %d \n',t);
@@ -121,6 +126,9 @@ for t=1:max_time-1
                         
                         % Transmit message to destination node
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                        % Increment counter for number of packets
+                        % transmitted in the current time slice
+                        nodes{src}.packets_transmitted_slice = nodes{src}.packets_transmitted_slice + 1;
                         
                         % Update paths for destination node
                         nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
@@ -157,6 +165,12 @@ for t=1:max_time-1
         end
     end
     [first_transmission_time,last_transmission_time] = storeTransmissionTimes(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,t);
+    if last_transmission_time > 0 && quit_simulation_early
+        fprintf('Ending simulation early, time = %d \n',t);
+        [group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);
+        toc;
+        return
+    end
 end
 
 clear t n k

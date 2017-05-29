@@ -40,6 +40,9 @@ new_exit_point = 4;
 test_group = 2; % Group 2 is moving towards the closed station
 first_transmission_time = -1; % Initialise to -1 for error handling
 last_transmission_time = -1;
+initial_power_consumption = -1;
+final_power_consumption = -1;
+overall_power_consumption = -1;
 
 % Set initial values for each moving node e.g. start point, end point etc.
 for m = 1:number_of_moving_groups
@@ -163,11 +166,12 @@ for t=1:max_time-1
         end
     end
     [first_transmission_time,last_transmission_time] = storeTransmissionTimes(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,t);
+    [initial_power_consumption,final_power_consumption] = calculatePowerConsumption(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,initial_power_consumption,final_power_consumption);
     % TODO: Calculate power consumption at point of first transmission
     % TODO: Calculate power consumption at end of simulation
     if last_transmission_time > 0 && quit_simulation_early
         fprintf('Ending simulation early, time = %d \n',t);
-        [group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);
+        [group_transmission_time,power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time,initial_power_consumption,final_power_consumption,overall_power_consumption);
         toc;
         return
     end
@@ -175,5 +179,6 @@ end
 
 clear t n k
 
-[group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);
+overall_power_consumption = calculateOverallPowerConsumption(nodes,number_of_stationary_nodes,test_group,nodes_per_group);
+[group_transmission_time,power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time,initial_power_consumption,final_power_consumption,overall_power_consumption);
 toc;

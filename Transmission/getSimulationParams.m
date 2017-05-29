@@ -25,7 +25,7 @@ function params = getSimulationParams
     
     % If result flag is true, final result is printed to console
     print_timing_result = true;
-    print_power_result = false;
+    print_power_result = true;
     
     % If quit flag is true, the simulation will exit once all nodes in the test
     % group have recieved the message

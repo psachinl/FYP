@@ -167,8 +167,7 @@ for t=1:max_time-1
     end
     [first_transmission_time,last_transmission_time] = storeTransmissionTimes(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,t);
     [initial_power_consumption,final_power_consumption] = calculatePowerConsumption(nodes,test_group,number_of_stationary_nodes,nodes_per_group,first_transmission_time,last_transmission_time,initial_power_consumption,final_power_consumption);
-    % TODO: Calculate power consumption at point of first transmission
-    % TODO: Calculate power consumption at end of simulation
+    
     if last_transmission_time > 0 && quit_simulation_early
         fprintf('Ending simulation early, time = %d \n',t);
         [group_transmission_time,power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time,initial_power_consumption,final_power_consumption,overall_power_consumption);

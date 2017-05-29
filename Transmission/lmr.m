@@ -21,6 +21,7 @@ plot_path = params{14};
 print_timing_result = params{15};
 print_power_result = params{16};
 quit_simulation_early = params{17};
+print_packet_error_rate = true; % LMR specific parameter
 
 number_of_moving_nodes = number_of_moving_groups * nodes_per_group;
 number_of_nodes = number_of_stationary_nodes + number_of_moving_nodes;
@@ -82,8 +83,6 @@ for t=1:max_time-1
     nodes = stationary2MovingTransmission(nodes,number_of_stationary_nodes,number_of_nodes,edge_start_points,edge_end_points,edge_weights,end_node,new_exit_point,map_node_positions,debug,t);
     
     clear start_and_end waypoints main_path
-    
-    % TODO: **Check and verify moving node to moving node transmission**
     
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
@@ -160,6 +159,7 @@ for t=1:max_time-1
     
     if last_transmission_time > 0 && quit_simulation_early
         fprintf('Ending simulation early, time = %d \n',t);
+        packet_error_rate = calculatePacketErrorRate(nodes,test_group,number_of_stationary_nodes,nodes_per_group,print_packet_error_rate);
         [group_transmission_time,power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time,initial_power_consumption,final_power_consumption,overall_power_consumption);
         toc;
         return
@@ -169,7 +169,6 @@ end
 clear t n k
 
 overall_power_consumption = calculateOverallPowerConsumption(nodes,number_of_stationary_nodes,test_group,nodes_per_group);
+packet_error_rate = calculatePacketErrorRate(nodes,test_group,number_of_stationary_nodes,nodes_per_group,print_packet_error_rate);
 [group_transmission_time,group_power_consumption] = getSimulationResults(print_timing_result,print_power_result,test_group,first_transmission_time,last_transmission_time);
 toc;
-% TODO: Implement a function to calculate packet transmission failure rate
-% for LMR

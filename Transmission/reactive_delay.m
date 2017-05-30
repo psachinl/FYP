@@ -75,7 +75,8 @@ for t=1:max_time-1
     % The reactive routing algorithm floods the channel with route request
     % packets. Once a route has been discovered, the message is
     % transmitted. This simulation will assume only 1 discover and transmit
-    % cycle can be done in 1s.
+    % cycle can be done in 1s and a blocking period exists between flooding
+    % periods to limit power consumption.
     
     % Stationary node to moving node transmission step
     nodes = stationary2MovingTransmission(nodes,number_of_stationary_nodes,number_of_nodes,edge_start_points,edge_end_points,edge_weights,end_node,new_exit_point,map_node_positions,debug,t);

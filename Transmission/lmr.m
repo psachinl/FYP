@@ -75,9 +75,9 @@ for t=1:max_time-1
 
     % The reactive routing algorithm floods the channel with route request
     % packets. Once routes have been discovered, transmission can occur.
-    % For moving node to moving node transmission, route discovery takes
-    % the entire time slice so the node can either update routes or
-    % transmit packets within a time slice..
+    % For moving node to moving node transmission, route discovery periods
+    % have a blocking period between them so invalid routes may be present
+    % in the route cache at certain times in the simulation.
     
     % Stationary node to moving node transmission step
     nodes = stationary2MovingTransmission(nodes,number_of_stationary_nodes,number_of_nodes,edge_start_points,edge_end_points,edge_weights,end_node,new_exit_point,map_node_positions,debug,t);
@@ -86,6 +86,7 @@ for t=1:max_time-1
     
     % Moving node to moving node transmission step
     for src=1+number_of_stationary_nodes:number_of_nodes
+        nodes{src}.packets_transmitted_slice = 0;
         if nodes{src}.message_to_transmit
             if isempty(nodes{src}.route_cache)
                 if ~nodes{src}.checkRouteRequestBlocked(t)
@@ -115,10 +116,9 @@ for t=1:max_time-1
                 % Transmit to nodes where routes are present in the route cache
                 remaining_routes = nodes{src}.route_cache;
                 for dest=nodes{src}.route_cache
-                    % TODO: Implement a limit on the number of
-                    % transmissions that can occur within a time slice (1s)
-                    if checkBTRange(nodes{src},nodes{dest})
-                        % If route is still valid, transmit
+                    if checkBTRange(nodes{src},nodes{dest}) && nodes{src}.packets_transmitted_slice < nodes{src}.max_transmissions_per_sec
+                        % If route is still valid and the node has not hit 
+                        % the transmissions per second limit, transmit
                         if debug
                             fprintf('Time = %d \n',t);
                             fprintf('Transmitting from node %d to %d \n',src,dest);
@@ -127,9 +127,17 @@ for t=1:max_time-1
                         end
                     
                         [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
+                        % Increment packets transmitted in the current time
+                        % slice
+                        nodes{src}.packets_transmitted_slice = nodes{src}.packets_transmitted_slice + 1;
 
                         % Update paths for destination node
                         nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
+                    elseif nodes{src}.packets_transmitted_slice >= nodes{src}.max_transmissions_per_sec
+                        % Transmission limit reached, do nothing
+                        if debug
+                            fprintf('Transmission limit reached for time slice \n')
+                        end
                     else
                         % If the route is no longer valid, transmission
                         % fails

@@ -12,6 +12,7 @@ classdef LMRNode
         transmission_speed = 5;
         transmissions_per_second = 1;   % Maximum number of transmissions per second
         route_discovery_delay = 5;      % Minimum delay in seconds between route discoveries
+        max_transmissions_per_sec = 10; % Maximum message transmissions per time slice
     end
     
     % Public variables
@@ -25,6 +26,7 @@ classdef LMRNode
         min_speed
         max_speed
         packets_transmitted = 0;
+        packets_transmitted_slice = 0; % Packets transmitted in the current time slice
         packets_received = 0;
         broadcast_count = 0;
         last_route_request_time = 0;

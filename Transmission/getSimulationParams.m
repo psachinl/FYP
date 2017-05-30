@@ -12,12 +12,12 @@ function params = getSimulationParams
     edge_weights = [579 40 128 267 163 250 0 115 18 0];
     start_node = [1,2,1,2]; % Array of start points for each group
     end_node = [4,8,5,8]; % End points
-    min_speed=[1,2,0.8,2.5]; % Min and max speeds for each group
-    max_speed=[2,3,1.4,2.5];
+    min_speed=[0.6,0.6,0.6,0.6]; % Min and max speeds for each group
+    max_speed=[1.8,1.8,1.8,1.8];
     map_node_positions = [340,440; 267,181; 340,919; 360,1000; 400,1000; 0,181; 0,18; 0,0];
 
     % Max simulation time
-    max_time = 300;
+    max_time = 600;
     
     % Debugging flags
     debug = false; % If true, text printed to console

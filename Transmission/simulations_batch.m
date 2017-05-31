@@ -3,7 +3,7 @@ close all
 
 % Script to run all simulations
 
-number_of_runs = 5;
+number_of_runs = 10;
 
 active_batch(number_of_runs)
 

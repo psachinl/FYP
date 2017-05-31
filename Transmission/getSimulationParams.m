@@ -3,7 +3,7 @@ function params = getSimulationParams
     
     % Node parameters
     number_of_moving_groups = 3;
-    nodes_per_group = 20;
+    nodes_per_group = 200;
     number_of_stationary_nodes = 3;
     
     % Graph parameters

@@ -3,11 +3,11 @@ classdef DREAMNode
     
     % Constant object values
     properties (Constant)
-        max_transmission_distance = 10; % Bluetooth transmission max 10m
-        transmission_cost = 0.5;        % Power consumption in Watts
-        table_update_cost = 0.25;
+        max_transmission_distance = 10;  % Bluetooth transmission max 10m
+        transmission_cost = 0.05;        % Power consumption in Watts
+        table_update_cost = 0.025;
         transmission_speed = 5;
-        max_transmissions_per_sec = 10; % Maximum message transmissions per time slice
+        max_transmissions_per_sec = 10;  % Maximum message transmissions per time slice
     end
     
     % Public variables

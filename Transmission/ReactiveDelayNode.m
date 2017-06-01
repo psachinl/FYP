@@ -5,14 +5,14 @@ classdef ReactiveDelayNode
     
     % Constant object values
     properties (Constant)
-        max_transmission_distance = 10; % Bluetooth transmission max 10m
-        transmission_cost = 0.5;        % Power consumption in Watts
-        table_update_cost = 0.25;       % 0.5*transmission_cost
-        broadcast_cost = 2;             % 4.0*transmission_cost
-        reply_cost = 0.5;               % 1.0*transmission_cost
+        max_transmission_distance = 10;  % Bluetooth transmission max 10m
+        transmission_cost = 0.05;        % Power consumption in Watts
+        table_update_cost = 0.025;       % 0.5*transmission_cost
+        broadcast_cost = 0.2;            % 4.0*transmission_cost
+        reply_cost = 0.05;               % 1.0*transmission_cost
         transmission_speed = 5;
-        transmissions_per_second = 1;   % Maximum number of transmissions per second
-        broadcast_delay = 5;            % Minimum delay in seconds between broadcasts
+        transmissions_per_second = 1;    % Maximum number of transmissions per second
+        broadcast_delay = 5;             % Minimum delay in seconds between broadcasts
     end
     
     % Public variables

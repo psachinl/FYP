@@ -4,7 +4,7 @@ close all
 % 400 nodes per group results
 
 n = 400;
-plot_figs = true;
+plot_figs = false;
 
 active={};
 reactive={};
@@ -12,12 +12,12 @@ reactive_delay={};
 lmr={};
 
 active{1} = [ % Active GTT
-    6
-    7
     5
-    6
-    5
-    6
+    4
+    3
+    NaN
+    NaN
+    NaN
     NaN
     NaN
     NaN
@@ -29,12 +29,12 @@ active{3} = median(active{1}); % Median GTT
 active{4} = range(active{1}); % Range of GTT values
 
 active{5} = [ % Average Transmission Power Consumption (ATPC)
-    1.528883e+01
-    1.811683e+01
-    1.053250e+01
-    1.407408e+01
-    1.112733e+01
-    1.540525e+01
+    1.449956e+01
+    1.165031e+01
+    8.436625
+    NaN
+    NaN
+    NaN
     NaN
     NaN
     NaN
@@ -46,12 +46,12 @@ active{7} = median(active{5}); % Median ATPC
 active{8} = range(active{5}); % Range
 
 active{9} = [ % Simulation times
-    969.411918
-    927.319520
-    941.692744
-    954.293021
-    920.202670
-    931.410588
+    1620.237727
+    1668.068461
+    1686.724284
+    NaN
+    NaN
+    NaN
     NaN
     NaN
     NaN
@@ -61,16 +61,16 @@ active{9} = [ % Simulation times
 active{10} = mean(active{9}); % Mean simulation time
 
 reactive{1} = [ % Reactive GTT
+    18
     17
     17
     17
-    20
-    22
+    16
     16
     18
     18
-    18
-    26
+    19
+    19
     ];
 
 reactive{2} = mean(reactive{1});
@@ -78,16 +78,16 @@ reactive{3} = median(reactive{1});
 reactive{4} = range(reactive{1});
 
 reactive{5} = [ % Average Transmission Power Consumption (ATPC)
-    1.990000
-    1.985333
-    1.859333
-    2.473333
-    2.077333
-    1.710000
-    1.972667
-    1.986000
-    1.950667
-    1.846000
+    2.051000
+    1.876500
+    1.853500
+    1.943000
+    1.709000
+    1.782000
+    1.907500
+    2.076500
+    1.972500
+    1.794000
     ];
 
 reactive{6} = mean(reactive{5}); % Mean ATPC
@@ -95,31 +95,31 @@ reactive{7} = median(reactive{5}); % Median ATPC
 reactive{8} = range(reactive{5}); % Range
 
 reactive{9} = [ % Simulation times
-    15.382582
-    14.720400
-    14.141273
-    17.416028
-    15.194260
-    13.703490
-    14.796759
-    16.458309
-    15.044999
-    14.295620
+    22.800702
+    21.753808
+    21.913386
+    21.468945
+    20.255719
+    20.538378
+    20.854495
+    22.233463
+    22.019107
+    19.939131
     ];
 
 reactive{10} = mean(reactive{9}); % Mean simulation time
 
 reactive_delay{1} = [ % Reactive_delay GTT
-    29
+    27
+    27
+    24
+    27
+    30
+    26
+    27
     31
     26
-    31
-    33
     27
-    32
-    29
-    35
-    30
     ];
 
 reactive_delay{2} = mean(reactive_delay{1});
@@ -127,16 +127,16 @@ reactive_delay{3} = median(reactive_delay{1});
 reactive_delay{4} = range(reactive_delay{1});
 
 reactive_delay{5} = [ % Average Transmission Power Consumption (ATPC)
-    7.920000e-01
-    9.446667e-01
-    7.726667e-01
-    7.613333e-01
-    9.553333e-01
-    7.966667e-01
-    7.800000e-01
-    8.626667e-01
-    8.233333e-01
-    7.993333e-01
+    7.650000e-01
+    8.485000e-01
+    7.415000e-01
+    8.080000e-01
+    8.565000e-01
+    7.260000e-01
+    8.000000e-01
+    9.310000e-01
+    7.475000e-01
+    8.330000e-01
     ];
 
 reactive_delay{6} = mean(reactive_delay{5}); % Mean ATPC
@@ -144,31 +144,31 @@ reactive_delay{7} = median(reactive_delay{5}); % Median ATPC
 reactive_delay{8} = range(reactive_delay{5}); % Range
 
 reactive_delay{9} = [ % Simulation times
-    9.932588
-    10.706332
-    9.664438
-    9.973018
-    10.758033
-    10.101520
-    9.896118
-    10.402081
-    10.100132
-    9.811020
+    12.467325
+    16.178299
+    15.002048
+    14.832484
+    13.525919
+    12.015867
+    12.432039
+    13.694555
+    12.220175
+    12.863725
     ];
 
 reactive_delay{10} = mean(reactive_delay{9}); % Mean simulation time
 
 lmr{1} = [ % LMR GTT
-    54
-    45
-    42
     43
-    42
-    42
     43
-    42
-    42
     43
+    41
+    43
+    40
+    42
+    41
+    41
+    40
     ];
 
 lmr{2} = mean(lmr{1}); % Mean GTT
@@ -176,16 +176,16 @@ lmr{3} = median(lmr{1}); % Median GTT
 lmr{4} = range(lmr{1}); % Range
 
 lmr{5} = [ % Average Transmission Power Consumption (ATPC)
-    2.410167
-    2.294167
-    2.177833
-    2.213500
-    2.295167
-    2.209167
-    2.188500
-    2.201667
-    2.187167
-    2.394667
+    2.721125
+    2.737375
+    2.720000
+    2.822500
+    2.779750
+    2.641250
+    2.840375
+    2.896000
+    2.667250
+    2.699250
     ];
 
 lmr{6} = mean(lmr{5}); % Mean ATPC
@@ -193,31 +193,31 @@ lmr{7} = median(lmr{5}); % Median ATPC
 lmr{8} = range(lmr{5}); % Range
 
 lmr{9} = [ % Simulation times
-    18.453159
-    17.270835
-    16.855500
-    17.683776
-    18.506489
-    17.531139
-    17.575621
-    17.186333
-    16.946625
-    17.546040
+    27.756508
+    25.768196
+    25.276979
+    24.838953
+    25.183681
+    23.955427
+    24.955328
+    25.456125
+    24.409504
+    25.456488
     ];
 
 lmr{10} = mean(lmr{9}); % Mean simulation time
 
 lmr{11} = [ % Packet Transmission Error Rate (PTER)
-    9.808983e-01
-    5.704507e-02
-    1.667593e-01
-    2.721829e-01
-    1.104362e-01
-    3.359462e-01
-    3.314917e-01
-    3.873824e-01
-    1.683502e-01
-    2.649709e-01
+    3.723764e-01
+    1.343183e-01
+    3.105590e-01
+    6.983240e-02
+    3.529827e-02
+    5.343783e-01
+    1.732502e-01
+    8.981002e-01
+    1.708817e-01
+    4.409769e-01
     ];
 
 lmr{12} = mean(lmr{11}); % Mean PTER

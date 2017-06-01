@@ -4,7 +4,7 @@ close all
 % 50 nodes per group results
 
 n = 50;
-plot_figs = true;
+plot_figs = false;
 
 active={};
 reactive={};

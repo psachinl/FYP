@@ -4,7 +4,7 @@ close all
 % 20 nodes per group results
 
 n = 20;
-plot_figs = true;
+plot_figs = false;
 
 active={};
 reactive={};
@@ -233,6 +233,7 @@ if plot_figs
     plot(reactive_delay{1},'*')
     plot(lmr{1},'.')
     hold off
+    grid on
     xlabel('Simulation Run')
     ylabel('Group Transmission Time (s)')
 %     ylim([0 200])
@@ -247,6 +248,7 @@ if plot_figs
     plot(reactive_delay{5},'*')
     plot(lmr{5},'.')
     hold off
+    grid on
     xlabel('Simulation Run')
     ylabel('Average Transmission Power Consumption (W)')
     legend('DREAM', 'Reactive', 'Reactive Delay', 'LMR', 'Location', 'best')
@@ -255,6 +257,7 @@ if plot_figs
     
     figure(3)
     plot(lmr{11},'x')
+    grid on
     xlabel('Simulation Run')
     ylabel('Packet Transmission Error Rate (%)')
     str = sprintf('LMR Packet Transmission Error Rate, %d nodes per group, \n route discovery blocking period = 5 seconds, 10 simulation runs \n mean = %f%%',n,lmr{12});

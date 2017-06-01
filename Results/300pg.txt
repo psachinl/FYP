@@ -1,3 +1,63 @@
+Active batch - Run 1 
+Ending simulation early, time = 267 
+Group 2 overall transmission time = 6 seconds 
+Group 2 transmission power consumption = 4.586650e+04 
+Group 2 average transmission power consumption = 1.528883e+02 
+Group 2 initial power consumption = 4184925 
+Group 2 final power consumption = 4.230792e+06 
+Elapsed time is 969.411918 seconds.
+
+
+Active batch - Run 2 
+Ending simulation early, time = 266 
+Group 2 overall transmission time = 7 seconds 
+Group 2 transmission power consumption = 5.435050e+04 
+Group 2 average transmission power consumption = 1.811683e+02 
+Group 2 initial power consumption = 4.132348e+06 
+Group 2 final power consumption = 4186699 
+Elapsed time is 927.319520 seconds.
+
+
+Active batch - Run 3 
+Ending simulation early, time = 270 
+Group 2 overall transmission time = 5 seconds 
+Group 2 transmission power consumption = 3.159750e+04 
+Group 2 average transmission power consumption = 1.053250e+02 
+Group 2 initial power consumption = 4.126842e+06 
+Group 2 final power consumption = 4.158440e+06 
+Elapsed time is 941.692744 seconds.
+
+
+Active batch - Run 4 
+Ending simulation early, time = 273 
+Group 2 overall transmission time = 6 seconds 
+Group 2 transmission power consumption = 4.222225e+04 
+Group 2 average transmission power consumption = 1.407408e+02 
+Group 2 initial power consumption = 4.210843e+06 
+Group 2 final power consumption = 4.253066e+06 
+Elapsed time is 954.293021 seconds.
+
+
+Active batch - Run 5 
+Ending simulation early, time = 264 
+Group 2 overall transmission time = 5 seconds 
+Group 2 transmission power consumption = 33382 
+Group 2 average transmission power consumption = 1.112733e+02 
+Group 2 initial power consumption = 4.087976e+06 
+Group 2 final power consumption = 4.121358e+06 
+Elapsed time is 920.202670 seconds.
+
+
+Active batch - Run 6 
+Ending simulation early, time = 265 
+Group 2 overall transmission time = 6 seconds 
+Group 2 transmission power consumption = 4.621575e+04 
+Group 2 average transmission power consumption = 1.540525e+02 
+Group 2 initial power consumption = 4116181 
+Group 2 final power consumption = 4.162397e+06 
+Elapsed time is 931.410588 seconds.
+
+
 Reactive batch - Run 1 
 Ending simulation early, time = 276 
 Group 2 overall transmission time = 20 seconds 

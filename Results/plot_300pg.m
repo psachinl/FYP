@@ -18,10 +18,10 @@ active{1} = [ % Active GTT
     6
     5
     6
-    NaN
-    NaN
-    NaN
-    NaN
+    8
+    6
+    6
+    5
     ];
 
 active{2} = mean(active{1}); % Mean GTT
@@ -35,10 +35,10 @@ active{5} = [ % Average Transmission Power Consumption (ATPC)
     1.407408e+01
     1.112733e+01
     1.540525e+01
-    NaN
-    NaN
-    NaN
-    NaN
+    1.616367e+01
+    1.411800e+01
+    1.482100e+01
+    1.130250e+01
     ];
 
 active{6} = mean(active{5}); % Mean ATPC
@@ -52,10 +52,10 @@ active{9} = [ % Simulation times
     954.293021
     920.202670
     931.410588
-    NaN
-    NaN
-    NaN
-    NaN
+    924.343979
+    936.998408
+    934.855149
+    954.943903
     ];
 
 active{10} = mean(active{9}); % Mean simulation time

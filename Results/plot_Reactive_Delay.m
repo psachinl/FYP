@@ -80,7 +80,10 @@ n = 400;
 blocking_period = [
     1
     2
+    3
+    4
     5
+    8
     10
     ];
 
@@ -110,6 +113,32 @@ bp2_GTT = [
     21
     ];
 
+bp3_GTT = [
+    21
+    20
+    21
+    23
+    22
+    23
+    23
+    22
+    25
+    22
+    ];
+
+bp4_GTT = [
+    27
+    22
+    23
+    24
+    25
+    22
+    23
+    26
+    23
+    26
+    ];
+
 bp5_GTT = [
     27
     27
@@ -121,6 +150,19 @@ bp5_GTT = [
     31
     26
     27
+    ];
+
+bp8_GTT = [
+    33
+    35
+    29
+    31
+    27
+    30
+    29
+    37
+    31
+    35
     ];
 
 bp10_GTT = [
@@ -139,14 +181,20 @@ bp10_GTT = [
 bp_mean_GTT = [
     mean(bp1_GTT);
     mean(bp2_GTT);
+    mean(bp3_GTT);
+    mean(bp4_GTT);
     mean(bp5_GTT);
+    mean(bp8_GTT);
     mean(bp10_GTT);
     ];
 
 bp_median_GTT = [
     median(bp1_GTT);
     median(bp2_GTT);
+    median(bp3_GTT);
+    median(bp4_GTT);
     median(bp5_GTT);
+    median(bp8_GTT);
     median(bp10_GTT);
     ];
 
@@ -176,6 +224,32 @@ bp2_ATPC = [
     1.275500
     ];
 
+bp3_ATPC = [
+    8.850000e-01
+    8.690000e-01
+    8.980000e-01
+    1.042000
+    9.455000e-01
+    9.715000e-01
+    1.016500
+    9.700000e-01
+    1.019000
+    8.270000e-1
+    ];
+
+bp4_ATPC = [
+    9.650000e-01
+    7.675000e-01
+    7.830000e-01
+    8.265000e-01
+    8.610000e-01
+    7.495000e-01
+    7.950000e-01
+    8.910000e-01
+    7.830000e-01
+    8.455000e-01
+    ];
+
 bp5_ATPC = [
     7.650000e-01
     8.485000e-01
@@ -187,6 +261,19 @@ bp5_ATPC = [
     9.310000e-01
     7.475000e-01
     8.330000e-01
+    ];
+
+bp8_ATPC = [
+    6.960000e-01
+    7.320000e-01
+    5.955000e-01
+    6.580000e-01
+    6.315000e-01
+    6.090000e-01
+    6.160000e-01
+    7.075000e-01
+    6.270000e-01
+    7.760000e-01
     ];
 
 bp10_ATPC = [
@@ -205,14 +292,20 @@ bp10_ATPC = [
 bp_mean_ATPC = [
     mean(bp1_ATPC);
     mean(bp2_ATPC);
+    mean(bp3_ATPC);
+    mean(bp4_ATPC);
     mean(bp5_ATPC);
+    mean(bp8_ATPC);
     mean(bp10_ATPC);
     ];
 
 bp_median_ATPC = [
     median(bp1_ATPC);
     median(bp2_ATPC);
+    median(bp3_ATPC);
+    median(bp4_ATPC);
     median(bp5_ATPC);
+    median(bp8_ATPC);
     median(bp10_ATPC);
     ];
 

@@ -318,10 +318,10 @@ plot(blocking_period,bp_mean_GTT,'-x')
 plot(blocking_period,bp_median_GTT,'-o')
 hold off
 grid on
-xlabel('Broadcast Blocking Period Duration (s)')
+xlabel('Route Discovery Delay (s)')
 ylabel('Group Transmission Time (s)')
 legend('Mean GTT', 'Median GTT', 'Location', 'best')
-str = sprintf('%s GTT as a function of Broadcast Blocking Period \n Simulation Runs = %d, Max Transmissions per Second = %d \n Nodes per Group = %d',algo,number_of_runs,transmissions_per_sec,400);
+str = sprintf('%s GTT as a function of Route Discovery Delay \n Simulation Runs = %d, Max Transmissions per Second = %d \n Nodes per Group = %d',algo,number_of_runs,transmissions_per_sec,400);
 title(str);
 
 figure(5)
@@ -330,10 +330,10 @@ plot(blocking_period,bp_mean_ATPC,'-x')
 plot(blocking_period,bp_median_ATPC,'-o')
 hold off
 grid on
-xlabel('Broadcast Blocking Period Duration (s)')
+xlabel('Route Discovery Delay (s)')
 ylabel('Average Transmission Power Consumption (W)')
 legend('Mean ATPC', 'Median ATPC', 'Location', 'best')
-str = sprintf('%s ATPC as a function of Broadcast Blocking Period \n Simulation Runs = %d, Max Transmissions per Second = %d \n Nodes per Group = %d',algo,number_of_runs,transmissions_per_sec,400);
+str = sprintf('%s ATPC as a function of Route Discovery Delay \n Simulation Runs = %d, Max Transmissions per Second = %d \n Nodes per Group = %d',algo,number_of_runs,transmissions_per_sec,400);
 title(str);
 
 figure(6)
@@ -342,8 +342,8 @@ plot(blocking_period,bp_mean_PTER,'-x')
 plot(blocking_period,bp_median_PTER,'-o')
 hold off
 grid on
-xlabel('Broadcast Blocking Period Duration (s)')
+xlabel('Route Discovery Delay (s)')
 ylabel('Packet Transmission Error Rate (%)')
 legend('Mean PTER', 'Median PTER', 'Location', 'best')
-str = sprintf('%s PTER as a function of Broadcast Blocking Period \n Simulation Runs = %d, Max Transmissions per Second = %d \n Nodes per Group = %d',algo,number_of_runs,transmissions_per_sec,400);
+str = sprintf('%s PTER as a function of Route Discovery Delay \n Simulation Runs = %d, Max Transmissions per Second = %d \n Nodes per Group = %d',algo,number_of_runs,transmissions_per_sec,400);
 title(str);

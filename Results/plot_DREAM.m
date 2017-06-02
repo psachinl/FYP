@@ -3,6 +3,7 @@ close all
 
 algo = 'DREAM';
 number_of_runs = 10;
+transmissions_per_sec = 10;
 
 nodes = [
     20
@@ -18,8 +19,8 @@ mean_GTT = [
     69
     31.6000
     9
-    NaN
-    NaN
+    6
+    3.7
     ];
 
 median_GTT = [
@@ -27,8 +28,8 @@ median_GTT = [
     67
     29
     8.5
-    NaN
-    NaN
+    6
+    3.5
     ];
 
 mean_ATPC = [
@@ -36,8 +37,8 @@ mean_ATPC = [
     44.8131
     32.5687
     14.6499
-    NaN
-    NaN
+    14.0950
+    10.6952
     ];
 
 median_ATPC = [
@@ -45,8 +46,8 @@ median_ATPC = [
     40.2763
     22.3173
     13.8755
-    NaN
-    NaN
+    14.4695
+    10.0435
     ];
 
 figure(1)
@@ -58,7 +59,7 @@ grid on
 xlabel('Nodes per Group')
 ylabel('Group Transmission Time (s)')
 legend('Mean Group Transmission Time', 'Median Group Transmission Time', 'Location', 'best')
-str = sprintf('%s Group Transmission Time as a function of Nodes per Group \n Simulation Runs = %d',algo,number_of_runs);
+str = sprintf('%s Group Transmission Time as a function of Nodes per Group \n Simulation Runs = %d, Max transmissions per second = %d',algo,number_of_runs,transmissions_per_sec);
 title(str);
 
 figure(2)
@@ -70,5 +71,5 @@ grid on
 xlabel('Nodes per Group')
 ylabel('Average Transmission Power Consumption (W)')
 legend('Mean ATPC', 'Median ATPC', 'Location', 'best')
-str = sprintf('%s ATPC as a function of Nodes per Group \n Simulation Runs = %d',algo,number_of_runs);
+str = sprintf('%s ATPC as a function of Nodes per Group \n Simulation Runs = %d, Max transmissions per second = %d',algo,number_of_runs,transmissions_per_sec);
 title(str);

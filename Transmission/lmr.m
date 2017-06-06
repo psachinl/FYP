@@ -132,7 +132,7 @@ for t=1:max_time-1
                         nodes{src}.packets_transmitted_slice = nodes{src}.packets_transmitted_slice + 1;
 
                         % Update paths for destination node
-                        nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
+                        nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t,max_time);
                     elseif nodes{src}.packets_transmitted_slice >= nodes{src}.max_transmissions_per_sec
                         % Transmission limit reached, do nothing
                         if debug

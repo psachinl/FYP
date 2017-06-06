@@ -114,7 +114,7 @@ for t=1:max_time-1
                     [nodes{src},nodes{dest}] = nodes{src}.transmit(nodes{dest});
 
                     % Update paths for destination node
-                    nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t);
+                    nodes{dest} = updatePaths(nodes{dest},map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t,max_time);
                 end
             end          
         end

@@ -1,4 +1,4 @@
-function dest = updatePaths(dest,map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t)
+function dest = updatePaths(dest,map_node_positions,edge_start_points,edge_end_points,edge_weights,new_exit_point,t,max_time)
     % Calculate path to nearest waypoint
     [~,waypoints_w,main_path_w,overall_path_w,nearest_waypoint] = move2Waypoint(dest,map_node_positions);
 
@@ -22,6 +22,11 @@ function dest = updatePaths(dest,map_node_positions,edge_start_points,edge_end_p
 
     % Append new path to existing node path
     dest.position{4} = [dest.position{4};overall_path];
+    
+    % Extend paths to avoid indexing errors
+    while length(dest.position{4}) < max_time
+        dest.position{4}(end+1,:) = dest.position{4}(end,:);
+    end
 
     % Update remaining position cells
     dest.position{1} = start_and_end;

@@ -511,6 +511,106 @@ Group 2 final power consumption = 3.336000e+02
 Elapsed time is 12.863725 seconds.
 
 
+Reactive Delay batch - Run 11 
+Ending simulation early, time = 282 
+Group 2 overall transmission time = 28 seconds 
+Group 2 transmission power consumption = 3.308000e+02 
+Group 2 average transmission power consumption = 8.270000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 3.312000e+02 
+Elapsed time is 14.015729 seconds.
+
+
+Reactive Delay batch - Run 12 
+Ending simulation early, time = 280 
+Group 2 overall transmission time = 26 seconds 
+Group 2 transmission power consumption = 3.188000e+02 
+Group 2 average transmission power consumption = 7.970000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 3.192000e+02 
+Elapsed time is 14.080456 seconds.
+
+
+Reactive Delay batch - Run 13 
+Ending simulation early, time = 279 
+Group 2 overall transmission time = 23 seconds 
+Group 2 transmission power consumption = 2.744000e+02 
+Group 2 average transmission power consumption = 6.860000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 2.748000e+02 
+Elapsed time is 12.844298 seconds.
+
+
+Reactive Delay batch - Run 14 
+Ending simulation early, time = 286 
+Group 2 overall transmission time = 27 seconds 
+Group 2 transmission power consumption = 3.150000e+02 
+Group 2 average transmission power consumption = 7.875000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 3.154000e+02 
+Elapsed time is 14.152392 seconds.
+
+
+Reactive Delay batch - Run 15 
+Ending simulation early, time = 284 
+Group 2 overall transmission time = 29 seconds 
+Group 2 transmission power consumption = 3.322000e+02 
+Group 2 average transmission power consumption = 8.305000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 3.326000e+02 
+Elapsed time is 17.649232 seconds.
+
+
+Reactive Delay batch - Run 16 
+Ending simulation early, time = 287 
+Group 2 overall transmission time = 24 seconds 
+Group 2 transmission power consumption = 3.222000e+02 
+Group 2 average transmission power consumption = 8.055000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 3.226000e+02 
+Elapsed time is 16.653100 seconds.
+
+
+Reactive Delay batch - Run 17 
+Ending simulation early, time = 285 
+Group 2 overall transmission time = 23 seconds 
+Group 2 transmission power consumption = 3.052000e+02 
+Group 2 average transmission power consumption = 7.630000e-01 
+Group 2 initial power consumption = 8.000000e-01 
+Group 2 final power consumption = 3.060000e+02 
+Elapsed time is 17.038014 seconds.
+
+
+Reactive Delay batch - Run 18 
+Ending simulation early, time = 281 
+Group 2 overall transmission time = 26 seconds 
+Group 2 transmission power consumption = 2.920000e+02 
+Group 2 average transmission power consumption = 7.300000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 2.924000e+02 
+Elapsed time is 15.437718 seconds.
+
+
+Reactive Delay batch - Run 19 
+Ending simulation early, time = 281 
+Group 2 overall transmission time = 25 seconds 
+Group 2 transmission power consumption = 3.018000e+02 
+Group 2 average transmission power consumption = 7.545000e-01 
+Group 2 initial power consumption = 8.000000e-01 
+Group 2 final power consumption = 3.026000e+02 
+Elapsed time is 15.954642 seconds.
+
+
+Reactive Delay batch - Run 20 
+Ending simulation early, time = 281 
+Group 2 overall transmission time = 28 seconds 
+Group 2 transmission power consumption = 2.994000e+02 
+Group 2 average transmission power consumption = 7.485000e-01 
+Group 2 initial power consumption = 4.000000e-01 
+Group 2 final power consumption = 2.998000e+02 
+Elapsed time is 16.568912 seconds.
+
+
 
 
 Delay = 6 (Run on lab computers)

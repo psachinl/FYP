@@ -3,6 +3,7 @@ close all
 
 algo = 'Reactive';
 number_of_runs = 10;
+transmissions_per_sec = 1;
 
 nodes = [
     20
@@ -58,7 +59,7 @@ grid on
 xlabel('Nodes per Group')
 ylabel('Group Transmission Time (s)')
 legend('Mean Group Transmission Time', 'Median Group Transmission Time', 'Location', 'best')
-str = sprintf('%s GTT as a function of Nodes per Group \n Simulation Runs = %d',algo,number_of_runs);
+str = sprintf('%s GTT as a function of Nodes per Group \n Simulation Runs = %d, Max Transmissions per Second = %d',algo,number_of_runs,transmissions_per_sec);
 title(str);
 
 figure(2)
@@ -70,5 +71,5 @@ grid on
 xlabel('Nodes per Group')
 ylabel('Average Transmission Power Consumption (W)')
 legend('Mean ATPC', 'Median ATPC', 'Location', 'best')
-str = sprintf('%s ATPC as a function of Nodes per Group \n Simulation Runs = %d',algo,number_of_runs);
+str = sprintf('%s ATPC as a function of Nodes per Group \n Simulation Runs = %d, Max Transmissions per Second = %d',algo,number_of_runs,transmissions_per_sec);
 title(str);
